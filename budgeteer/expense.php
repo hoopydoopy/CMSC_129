@@ -103,7 +103,7 @@
 	<link rel="stylesheet" href="css/fontello.css">
 	-->
 
-	<link rel="stylesheet" href="homestyle.css">
+	<link rel="stylesheet" href="expensestyle.css">
 	<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500;700&family=Fredoka+One&family=Roboto:wght@400;700;900&family=Varela+Round&display=swap" rel="stylesheet">
 	
 </head>
@@ -140,10 +140,12 @@
 			</div>
 		</div>
 
-		<div class="box big-box">
-			<form method="post">
+		<div class="box">
+			<form class="budget-form" method="post">
 
+			
 				<h3>ADD EXPENSE</h3>
+			
 
 				<?php
 					if(isset($_SESSION['emptyFieldError'])) {
@@ -153,125 +155,143 @@
 					}
 				?>
 
-						<div class="">
-							<div class="">
+					<div class="column">
+							<div class="amount-box">
+								<div class="amount">
 								<span class="">Amount</span>
-							</div>
-							<input class="form-control userInput labeledInput" type="number" name="expenseAmount" step="0.01" value="<?php
-								if(isset($_SESSION['formExpeseAmount'])) {
-									
-									echo $_SESSION['formExpeseAmount'];
-									unset($_SESSION['formExpeseAmount']);
-								}
-							?>">
-						</div>
-						
-						<?php
-							if(isset($_SESSION['expenseAmountError'])) {
-								
-								echo '<div class="text-danger">'.$_SESSION['expenseAmountError'].'</div>';
-								unset($_SESSION['expenseAmountError']);
-							}
-						?>
-						
-						<div class="">
-							<div class="">
-								<span class="">Date</span>
-							</div>
-							
-							<?php
-							if(!isset($_SESSION['formExpenseDate'])) {
-								
-									echo "<script>$(document).ready(function(){getCurrentDate();})</script>";
-								}
-							?>
-							
-							<input class="form-control  userInput labeledInput" type="date" name="expenseDate" id="dateInput" value="<?php
-								if(isset($_SESSION['formExpenseDate'])) {
-									
-									echo $_SESSION['formExpenseDate'];
-									unset($_SESSION['formExpenseDate']);
-								}
-							?>" required>
-						</div>
-						
-						<div class="">
-							<div class="">
-								<span class="">Payment Method</span>
-							</div>
-							<select class="" name="expensePaymentMethod">
-								<?php
-									foreach ($paymentMethodsOfLoggedUser as $payment_method) {
-									
-										if(isset($_SESSION['formExpensePaymentMethod']) && $_SESSION['formExpensePaymentMethod'] == $payment_method['payment_method']) {
-											
-											echo '<option selected>'.$payment_method['payment_method'].'</option>';
-											unset($_SESSION['formExpensePaymentMethod']);
-										} else {
-											
-											echo '<option>'.$payment_method['payment_method'].'</option>';
-										}
-									}
-								?>
-							</select>
-						</div>
-						
-						<div class="">
-							<div class="">
-								<span class="">Category</span>
-							</div>
-							<select class="" name="expenseCategory">
-								<?php
-									foreach ($expenseCategoriesOfLoggedUser as $category) {
-									
-										if(isset($_SESSION['formExpenseCategory']) && $_SESSION['formExpenseCategory'] == $category['expense_category']) {
-											
-											echo '<option selected>'.$category['expense_category']."</option>";
-											unset($_SESSION['formExpenseCategory']);
-										} else {
-											
-											echo "<option>".$category['expense_category']."</option>";
-										}
-									}
-								?>
-							</select>
-						</div>
-						
-						<div class="">
-							<div class="">
-								<span class="">Commments<br />(optional)</span>
-							</div>
-							<textarea class="form-control userInput labeledInput" name="expenseComment" rows="5"><?php
-									if(isset($_SESSION['formExpenseComment'])) {
-										
-										echo $_SESSION['formExpenseComment'];
-										unset($_SESSION['formExpenseComment']);
-									}
-								?></textarea>
-						</div>
-						
-						<?php
-							if(isset($_SESSION['commentError'])) {
-								
-								echo '<div class="text-danger">'.$_SESSION['commentError'].'</div>';
-								unset($_SESSION['commentError']);
-							}
-						?>
+								</div>
 
-						<div class="col-md-11">
-								<button class="btn-lg mt-3 mb-2 mx-1 signButton bg-primary" type="submit">
-									<i class="icon-floppy"></i> Save
-								</button>
-							<a data-toggle="modal" data-target="#discardExpenseModal">
-								<button class="btn-lg mt-3 mb-2 mx-1 signButton bg-danger">
-									<i class="icon-cancel-circled"></i> Cancel
-								</button>
-							</a>
-						</div>
+										<input class="amountinput" type="number" name="expenseAmount" step="0.01" value="<?php
+												if(isset($_SESSION['formExpeseAmount'])) {
+													
+													echo $_SESSION['formExpeseAmount'];
+													unset($_SESSION['formExpeseAmount']);
+												}
+											?>">
+							</div>
+								
+										<?php
+											if(isset($_SESSION['expenseAmountError'])) {
+												
+												echo '<div class="text-danger">'.$_SESSION['expenseAmountError'].'</div>';
+												unset($_SESSION['expenseAmountError']);
+											}
+										?>
+								
+
+							<div class="date-box">
+								<div class="date">
+								<span class="">Date</span>
+								</div>
+								
+										<?php
+										if(!isset($_SESSION['formExpenseDate'])) {
+											
+												echo "<script>$(document).ready(function(){getCurrentDate();})</script>";
+											}
+										?>
+										
+										<input class="dateinput" type="date" name="expenseDate" id="dateInput" value="<?php
+											if(isset($_SESSION['formExpenseDate'])) {
+												
+												echo $_SESSION['formExpenseDate'];
+												unset($_SESSION['formExpenseDate']);
+											}
+										?>" required>
+							</div>
+								
+
+							<div class="method-box">
+								<div class="method">
+								<span class="">Payment Method</span>
+								</div>
+
+								<select class="methodinput" name="expensePaymentMethod">
+
+										<?php
+											foreach ($paymentMethodsOfLoggedUser as $payment_method) {
+											
+												if(isset($_SESSION['formExpensePaymentMethod']) && $_SESSION['formExpensePaymentMethod'] == $payment_method['payment_method']) {
+													
+													echo '<option selected>'.$payment_method['payment_method'].'</option>';
+													unset($_SESSION['formExpensePaymentMethod']);
+												} else {
+													
+													echo '<option>'.$payment_method['payment_method'].'</option>';
+												}
+											}
+										?>
+
+								</select>
+							</div>
+						
+
+							<div class="category-box">
+								<div class="category">
+								<span class="">Category</span>
+								</div>
+
+								<select class="categoryinput" name="expenseCategory">
+
+											<?php
+												foreach ($expenseCategoriesOfLoggedUser as $category) {
+												
+													if(isset($_SESSION['formExpenseCategory']) && $_SESSION['formExpenseCategory'] == $category['expense_category']) {
+														
+														echo '<option selected>'.$category['expense_category']."</option>";
+														unset($_SESSION['formExpenseCategory']);
+													} else {
+														
+														echo "<option>".$category['expense_category']."</option>";
+													}
+												}
+											?>
+
+								</select>
+							</div>
+							
+					
+					
+							<div class="comments-box">
+								<div class="comments">
+								<span class="">Commments (optional)</span>
+								</div>
+
+										<textarea class="commentsinput" name="expenseComment" rows="5"><?php
+												if(isset($_SESSION['formExpenseComment'])) {
+													
+													echo $_SESSION['formExpenseComment'];
+													unset($_SESSION['formExpenseComment']);
+												}
+											?></textarea>
+							</div>
+							
+										<?php
+											if(isset($_SESSION['commentError'])) {
+												
+												echo '<div class="text-danger">'.$_SESSION['commentError'].'</div>';
+												unset($_SESSION['commentError']);
+											}
+										?>
+
+
+							
 						
 					</div>
 
+					<div class="button-container">
+									<button class="saveButton" type="submit">
+										<i class="icon-floppy"></i> Save
+									</button>
+								<a data-toggle="modal" data-target="#discardExpenseModal">
+									<button id="cancelButton" class="cancelButton">
+										<i class="icon-cancel-circled"></i> Cancel
+									</button>
+								</a>
+					</div>
+
 			</form>	
+			</div>
          
 
 		  				
@@ -281,55 +301,44 @@
 					
 					echo "<script>$(document).ready(function(){ $('#expenseAdded').modal('show'); });</script>
 
-					<div class='modal fade' id='expenseAdded' role='dialog'>
-						<div class='modal-dialog col'>
-							<div class='modal-content'>
+					<div class='success'>
 								<div class='modal-header'>
 									<h3 class='modal-title'>New Expense Added</h3>
-									<a href='income.php'>
-									<button type='button' class='close'>&times;</button>
-									</a>
 								</div>
-												
-								<div class='modal-body'>
-									<p>Your expense has been successfully added.</p>
-								</div>
-								<div class='modal-footer'>
-									<a href='home.php'>
-										<button type='button' class='btn btn-success'>OK</button>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>"; 
+								
+							</div>"; 
 				}
 			?>
 			
-			<div class="modal hide fade in" data-backdrop="static" id="discardExpenseModal">
-				<div class='modal-dialog col'>
-					<div class='modal-content'>
-						<div class='modal-header'>
-							<h3 class='modal-title'>Quit Adding Expense?</h3>
-							<a href='expense.php'>
-							<button type='button' class='close'>&times;</button>
-							</a>
-						</div>
-												
-						<div class='modal-body'>
-							<p>Data you have entered so far will not be saved.</p>
-						</div>
-						<div class='modal-footer'>
-							<a href='menu.php'>
-								<button type='button' class='btn btn-success'>YES</button>
-							</a>
-							<button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
-						</div>
-					</div>
+			<div id="popup" class="popup">
+				<div class="popup-content">
+					<h3>Quit adding expense?</h3>
+					<p>Your changes will not be saved.</p>
+					<button id="confirmBtn">Confirm</button>
+					<button id="cancelPopupBtn">Cancel</button>
 				</div>
 			</div>
+	
+	<script>
+		
+		function openPopup() {
+		document.getElementById('popup').style.display = "block";
+		}
 
-		</div>
+		function closePopup() {
+		document.getElementById('popup').style.display = "none";
+		}
 
+		document.getElementById('cancelButton').addEventListener('click', openPopup);
+		document.getElementById('cancelPopupBtn').addEventListener('click', closePopup);
+
+		const confirmBtn = document.getElementById('confirmBtn');
+
+		confirmBtn.addEventListener('click', function() {
+		window.location.href = 'home.php';
+		});
+	</script>
+	
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="js/bootstrap.min.js"></script>
 </body>
