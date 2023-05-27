@@ -66,7 +66,7 @@ function drawChart(incomes, expenses) {
 			title: 'Expense Distribution',
 			//colors: ['#00e64d', '#66ff99', '#b3ffcc'],
 			//colors: ['#370617', '#6a040f', '#9d0208'],
-			colors: ['#C8EB9B ', '#5E807F  ', '#D3C1C3 ','#082D0F '],
+			colors: ['#C8EB9B', '#5E807F  ', '#D3C1C3 ','#082D0F '],
 			backgroundColor: { fill:'transparent' },
 			chartArea:{top:30,bottom:10,width:'100%',height:'100%'},
 			fontSize: 16
@@ -86,7 +86,7 @@ function drawChart(incomes, expenses) {
 			title: 'Income Distribution',
 			//colors: ['#ff3333', '#ff6666', '#ffb3b3'],
 			//colors: ['#370617', '#6a040f', '#9d0208','#dc2f02','#e85d04'],
-			colors: ['#7D6FBB', '#F2BEFC ', '#669BBC','#E4B7E5'],
+			colors: ['#7D6FBB', '#F2BEFC', '#669BBC','#E4B7E5'],
 			backgroundColor: { fill:'transparent' },
 			chartArea:{top:30,bottom:10,width:'100%',height:'100%'},
 			fontSize: 16
