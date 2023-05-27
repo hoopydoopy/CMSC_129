@@ -114,7 +114,7 @@
 <head>
 
 	<meta charset="utf-8">
-	<title>Budgeteer</title>
+	<title>Register-Budgeteer</title>
 	<meta name="keywords" content="expense manager, budget planner, expense tracker, budgeting app, money manager, money management, personal finance management software, finance manager, saving planner">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	

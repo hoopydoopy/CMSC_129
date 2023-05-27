@@ -146,24 +146,3 @@
   .right-section button[type="submit"]:hover {
     background-color: #34A0A4;
   }
-
-
-  .budget-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .budget-form input[type="number"],
-.budget-form input[type="date"],
-.budget-form select,
-.budget-form textarea {
-  width: 100%;
-  height: 40px;
-  padding: 5px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}

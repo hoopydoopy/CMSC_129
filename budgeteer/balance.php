@@ -99,8 +99,15 @@
 					<ul class="navbar-nav mx-auto">
 					
 						<li class="col-lg-2 nav-item">
-							<a class="nav-link" href="home.php"><i class="icon-home"></i> Home</a>
+							
+						<?php
+								$userStartDate = date('Y-m-01');
+								$userEndDate = date('Y-m-t');
+								
+								echo '<a class="dropdown-item" href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Home</a>';
+								?>
 						</li>
+						<!--<a class="nav-link" href="home.php"><i class="icon-home"></i> Home</a>-->
 						
 						<li class="col-lg-2 nav-item">
 							<a class="nav-link" href="income.php"><i class="icon-money-1"></i> Add Income</a>
@@ -201,7 +208,7 @@
 			
 			<div class="row col-sm-6 col-lg-4 justify-content-center mt-5 mb-2 mx-auto box">
 				
-				<?php
+				<?php	
 				$totalIncomes = 0;
 				$totalExpenses = 0;
 								
@@ -263,20 +270,7 @@
 								foreach ($incomesOfLoggedUser as $incomes) {
 									
 									echo "<tr class=\"summary\"><td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> 
-									<td>
-								
-									<div class=\"col-md-11\">
-									<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"submit\">
-									<i class=\"icon-floppy\"></i> Edit
-									</button>
-									<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
-									<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
-									<i class=\"icon-cancel-circled\"></i> Delete
-									</button>
-									</a>
-									</div>
-
-									</td>
+									
 									
 									</tr>";
 									
@@ -294,11 +288,29 @@
 									
 									foreach ($incomesOfSpecificCategory as $categoryIncome) {
 										
-										echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td><td class=\"amount\">{$categoryIncome['income_amount']} ₱</td><td class=\"comment\">{$categoryIncome['income_comment']}</td></tr>";
+										echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td><td class=\"amount\">{$categoryIncome['income_amount']} ₱</td><td class=\"comment\">{$categoryIncome['income_comment']}</td>
+										<td>
+								
+										<div class=\"col-md-11\">
+										<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"submit\">
+										<i class=\"icon-floppy\"></i> Edit
+										</button>
+										<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
+										<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+										<i class=\"icon-cancel-circled\"></i> Delete
+										</button>
+										</a>
+										</div>
+
+										</td>
+										</tr>";
 									}
 								}
 								
-								echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td></tr>";
+								echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td>
+						
+								
+								</tr>";
 							?>
 						</tbody>
 					</table>
@@ -326,18 +338,6 @@
 									echo "<tr class=\"summary\"><td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\">{$expenses['expense_amount']} ₱</td>
 									<td>
 								
-									<div class=\"col-md-11\">
-									<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"submit\">
-									<i class=\"icon-floppy\"></i> Edit
-									</button>
-									<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
-									<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
-									<i class=\"icon-cancel-circled\"></i> Delete
-									</button>
-									</a>
-									</div>
-
-									</td>
 									
 									</tr>";
 									
@@ -354,7 +354,24 @@
 									
 									foreach ($expensesOfSpecificCategory as $categoryExpense) {
 										
-										echo "<tr><td class=\"date\">{$categoryExpense['expense_date']}</td><td class=\"amount\">{$categoryExpense['expense_amount']} ₱</td><td class=\"payment\">{$categoryExpense['payment_method']}</td><td class=\"comment\">{$categoryExpense['expense_comment']}</td></tr>";
+										echo "<tr><td class=\"date\">{$categoryExpense['expense_date']}</td><td class=\"amount\">{$categoryExpense['expense_amount']} ₱</td><td class=\"payment\">{$categoryExpense['payment_method']}</td><td class=\"comment\">{$categoryExpense['expense_comment']}</td>
+										<td>
+								
+											<div class=\"col-md-11\">
+											<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"submit\">
+											<i class=\"icon-floppy\"></i> Edit
+											</button>
+											<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
+											<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+											<i class=\"icon-cancel-circled\"></i> Delete
+											</button>
+											</a>
+											</div>
+
+										</td>
+										
+										
+										</tr>";
 									}
 								}
 								

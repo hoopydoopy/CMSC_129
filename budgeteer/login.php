@@ -1,56 +1,21 @@
 <?php
-	session_start();
-
 	
-	$startDate = 00-00-00;
-	$endDate = 00-00-00;
-		
+	session_start();
+	
+
 	if(isset($_SESSION['loggedUserId'])) {
 		
-		require_once 'database.php';
-		
-		if(isset($_GET['userStartDate'])) {
-			
-			if($_GET['userStartDate'] > $_GET['userEndDate']) {
-				
-				$startDate = $_GET['userEndDate'];
-				$endDate = $_GET['userStartDate'];
-			} else {
-				
-				$startDate = $_GET['userStartDate'];
-				$endDate = $_GET['userEndDate'];
-			}
-			
-			$expensesQuery = $db -> prepare(
-			"SELECT e.category_id, ec.expense_category, SUM(e.expense_amount) AS expense_amount
-			FROM expenses e NATURAL JOIN expense_categories ec
-			WHERE e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
-			GROUP BY e.category_id
-			ORDER BY expense_amount DESC");
-			$expensesQuery -> execute([':loggedUserId'=> $_SESSION['loggedUserId'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-			
-			$expensesOfLoggedUser = $expensesQuery -> fetchAll();
-			
-			$incomesQuery = $db -> prepare(
-			"SELECT i.category_id, ic.income_category, SUM(i.income_amount) AS income_amount
-			FROM incomes i NATURAL JOIN income_categories ic
-			WHERE i.user_id=:loggedUserId AND i.income_date BETWEEN :startDate AND :endDate
-			GROUP BY i.category_id
-			ORDER BY income_amount DESC");
-			$incomesQuery -> execute([':loggedUserId'=> $_SESSION['loggedUserId'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-			
-			$incomesOfLoggedUser = $incomesQuery -> fetchAll();
-			
-			echo "<script>
-					var incomes = ".json_encode($incomesOfLoggedUser).";
-					var expenses = ".json_encode($expensesOfLoggedUser)."
-				</script>";
-			
-		}
-
-		header('Location: home.php');
+		header('Location: home.php');	
 		exit();
 	}
+
+?>
+
+<?php
+	// set the start and end date for home
+	$userStartDate = date('Y-m-d');
+	$userEndDate = date('Y-m-d');
+	
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +25,7 @@
 <head>
 
 	<meta charset="utf-8">
-	<title>Budgeteer - Take Control of Your Finances</title>
+	<title>Login-Budgeteer</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
@@ -100,8 +65,8 @@
 
 		<div class="right-section">
 
-			<form method="post" action="home.php">
-
+			<!--<form method="post" action="home.php">-->
+			<form method="post" action="home.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>">
 				<?php
 					if(isset($_SESSION['badAttempt'])) {
 									
@@ -123,6 +88,7 @@
 				
 				<input class="mt-3" type="submit" value="Login" data-toggle="modal" data-target="#dateModal">
 				
+
 				<!--
 					
 					<div>
@@ -130,6 +96,7 @@
 								Login
 				</button>
 				</div>
+				
 				-->
 			</form>
 		</div>

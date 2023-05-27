@@ -4,11 +4,41 @@
 	if(isset($_SESSION['loggedUserId'])) {
         require_once 'database.php';
 
-    }else {
+		if(isset($_POST['username'])) {
+		
+			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+      		$username = filter_input(INPUT_POST, 'username');
+			$password = filter_input(INPUT_POST, 'password');
+		
+			$userQuery = $db -> prepare(
+			"SELECT user_id, password, username
+			FROM users
+			WHERE username = :username");
+			$userQuery->execute([':username'=> $username]);
+			
+			$user = $userQuery -> fetch();
+
+			if($user && password_verify($password, $user['password'])) {
+			//if($user && $password) {
+				
+				$_SESSION['loggedUserId'] = $user['user_id'];
+				$_SESSION['username'] = $user['username'];
+				unset($_SESSION['badAttempt']);
+				
+			} else {
+				
+				$_SESSION['badAttempt'] = "";
+				header ('Location: login.php');
+				exit();
+			}
+    	}
+    }
+
+	/*else {
 		
 		header ("Location: landing.php");
 		exit();
-    }
+    }*/
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +73,15 @@
 			</div>
 			<ul>
 				<li><a href="#">Profile</a></li>
-				<li><a href="home.php">Home</a></li>
+				<li>
+					<!--<a href="home.php" class="active">Home</a>-->
+					<?php
+					$userStartDate = date('Y-m-01');
+					$userEndDate = date('Y-m-t');
+							
+					echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Home</a>';
+					?>
+				</li>
 				<li><a href="budget.php">Budget</a></li>
 				<li><a href="expense.php">Expense</a></li>
 				<li>
@@ -56,8 +94,9 @@
 					?>
 				</li>
 				<li><a href="#">Notes</a></li>
-				<li><a href="#">Calendar</a></li>
+				<li><a href="calendar.php">Calendar</a></li>
 				<li><a href="settings.php" class="active">Settings</a></li>
+				<li><a href="logout.php">Log Out</a></li>
 			</ul>
 			<div class="logo">
 				<img src="images/Logo3.png" alt="Logo">
@@ -65,7 +104,7 @@
 		</div>
 
 	<?php
-        $servername = "localhost";
+       /*$servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "my_budget";
@@ -115,7 +154,53 @@
 			$current_name = $new_name;
 			$current_password = $new_password;
 			$current_email = $new_email;
+		}*/
+	?>
+	<?php
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "my_budget";
+
+	// Connect to MySQL
+	$conn = new mysqli($servername, $username, $password, $dbname);
+
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+
+	// Get user's current information
+	//session_start();
+	$user_id = $_SESSION['loggedUserId']; // Assume user is logged in
+	$sql = "SELECT username, email, password FROM users WHERE user_id = '$user_id'";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+		$row = $result->fetch_assoc();
+		$current_name = $row['username'];
+		$current_password = $row['password'];
+		$current_email = $row['email'];
+	} else {
+		echo "Error: User not found";
+	}
+
+	// Handle form submission
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		// Get user input
+		$new_password = $_POST['password'];
+
+		// Validate input (not shown)
+
+		// Update database
+		$sql = "UPDATE users SET password = '$new_password' WHERE user_id = '$user_id'";
+		if ($conn->query($sql) === TRUE) {
+			echo "Password updated successfully";
+			$current_password = $new_password; // Update current information
+		} else {
+			echo "Error updating password: " . $conn->error;
 		}
+	}
 	?>
 
 	<form method="post">

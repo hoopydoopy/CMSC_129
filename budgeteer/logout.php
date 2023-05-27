@@ -3,5 +3,5 @@
 	
 	session_unset();
 	
-	header('Location: landing.php');
+	header('Location: login.php');
 ?>

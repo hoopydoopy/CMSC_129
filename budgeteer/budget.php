@@ -1,4 +1,4 @@
-	<?php
+<?php
 		session_start();
 
 		if(isset($_SESSION['loggedUserId'])) {
@@ -127,7 +127,7 @@
           $userStartDate = date('Y-m-01');
           $userEndDate = date('Y-m-t');
                   
-          echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Statistics</a>';
+          echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'&period=month">Statistics</a>';
         ?>
       </li>
       <li><a href="#">Notes</a></li>
