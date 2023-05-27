@@ -32,6 +32,7 @@
 				
 				$_SESSION['badAttempt'] = "";
 				header ('Location: login.php');
+        //header ('Location: budget.php');
 				exit();
 			}
     }
@@ -147,42 +148,34 @@
             <img src="images/Logo3.png" alt="Logo">
           </div>
 	</div>
+  
+  <!-- start arrow buttons -->
     <div class="container">
         <div class="calendar-slider">
           <div class="slider-nav">
-            <!--<i class="fas fa-chevron-left" onclick=""></i>-->
             
           <?php
             $date = isset($_GET['userStartDate']) ? $_GET['userStartDate'] : date('Y-m-d');
             $prevDate = date('Y-m-d', strtotime('-1 day', strtotime($date)));
             $nextDate = date('Y-m-d', strtotime('1 day', strtotime($date)));
+            $currentDate = date('Y-m-d');
+            $isCurrentDate = $date === $currentDate;
+            echo '<a class="fas fa-chevron-left" onclick="changeDate(\''.$prevDate.'\')"></a>';
+
+            // Display the date
+            $formattedDate = date('F j, Y', strtotime($date));
+            echo '<span class="date" id="result">'.$formattedDate.'</span>';
+
+            // Display the right button if it's not the current date
+            if (!$isCurrentDate) {
+              echo '<a class="fas fa-chevron-right" onclick="changeDate(\''.$nextDate.'\')"></a>';
+            }
           ?>
 
-          <a class="fas fa-chevron-left" onclick="changeDate('<?php echo $prevDate; ?>')"></a>
-
           <script>
             function changeDate(date) {
               var newDate = new Date(date);
-              newDate.setDate(newDate.getDate() - 1);
-              var newDateString = newDate.toISOString().split('T')[0];
-              var url = 'home.php?userStartDate=' + newDateString + '&userEndDate=' + newDateString;
-              window.location.href = url;
-            }
-          </script>
-
-          <span class="date" id="result">
-            <?php
-              $formattedDate = date('F j, Y', strtotime($date));
-              echo $formattedDate;
-            ?>
-          </span>
-
-          <a class="fas fa-chevron-right" onclick="changeDate('<?php echo $nextDate; ?>')"></a>
-
-          <script>
-            function changeDate(date) {
-              var newDate = new Date(date);
-              newDate.setDate(newDate.getDate() - 1);
+              newDate.setDate(newDate.getDate());
               var newDateString = newDate.toISOString().split('T')[0];
               var url = 'home.php?userStartDate=' + newDateString + '&userEndDate=' + newDateString;
               window.location.href = url;
@@ -192,7 +185,7 @@
 
           </div>
 
-          
+    <!-- end arrow buttons --> 
        
               
         </div>
