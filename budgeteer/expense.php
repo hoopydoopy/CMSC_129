@@ -124,11 +124,11 @@
           $userStartDate = date('Y-m-d');
 		      $userEndDate = date('Y-m-d');
                   
-          echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'" class="active">Home</a>';
+          echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Home</a>';
         ?>
       </li>
 			<li><a href="budget.php">Budget</a></li>
-      <li><a href="expense.php">Expense</a></li>
+      <li><a href="expense.php" class="active">Expense</a></li>
 			<li>
         
         <?php
@@ -343,7 +343,12 @@
 		const confirmBtn = document.getElementById('confirmBtn');
 
 		confirmBtn.addEventListener('click', function() {
-		window.location.href = 'home.php';
+			<?php
+          		$userStartDate = date('Y-m-d');
+			  $userEndDate = date('Y-m-d');
+			  echo "window.location.href = 'home.php?userStartDate=".$userStartDate."&userEndDate=".$userEndDate."';";
+		?>
+		//window.location.href = 'home.php';
 		});
 	</script>
 	
