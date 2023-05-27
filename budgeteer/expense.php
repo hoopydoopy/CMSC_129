@@ -111,34 +111,42 @@
 <body>
 	
 		
-		<div class="navbar">
-			<div class="profile">
-				<img src="images/profile picture.png" alt="Profile Picture">
-				<p>John Doe</p>
-			</div>
-			<ul>
-				<li><a href="#">Profile</a></li>
-				<li><a href="home.php">Home</a></li>
-				<li><a href="budget.php">Budget</a></li>
-				<li><a href="expense.php" class="active">Expense</a></li>
-				<li>
-					<!--<a href="balance.php">Statistics</a>-->
-					<?php
-					$userStartDate = date('Y-m-01');
-					$userEndDate = date('Y-m-t');
-							
-					echo '<a class="dropdown-item" href="balance.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Statistics</a>';
-					?>
-				</li>
-				<li><a href="#">Notes</a></li>
-				<li><a href="#">Calendar</a></li>
-				<li><a href="settings.php">Settings</a></li>
-				<li><a href="logout.php">Log Out</a></li>
-			</ul>
-			<div class="logo">
-				<img src="images/Logo3.png" alt="Logo">
-			</div>
+<div class="navbar">
+		<div class="profile">
+			<img src="images/profile pic.png" alt="Profile Picture">
+			<p>John Doe</p>
 		</div>
+		<ul>
+			<li><a href="#">Profile</a></li>
+			<li>
+        
+        <?php
+          $userStartDate = date('Y-m-d');
+		      $userEndDate = date('Y-m-d');
+                  
+          echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'" class="active">Home</a>';
+        ?>
+      </li>
+			<li><a href="budget.php">Budget</a></li>
+      <li><a href="expense.php">Expense</a></li>
+			<li>
+        
+        <?php
+          $userStartDate = date('Y-m-01');
+          $userEndDate = date('Y-m-t');
+                  
+          echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Statistics</a>';
+        ?>
+      </li>
+      <li><a href="#">Notes</a></li>
+      <li><a href="calendar.php">Calendar</a></li>
+      <li><a href="settings.php">Settings</a></li>
+      <li><a href="logout.php">Log Out</a></li>
+		</ul>
+        <div class="logo">
+            <img src="images/Logo3.png" alt="Logo">
+          </div>
+	</div>
 
 		<div class="box">
 			<form class="budget-form" method="post">

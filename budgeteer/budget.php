@@ -91,7 +91,7 @@
 		<link rel="stylesheet" href="css/fontello.css">
 		-->
 		
-		<link rel="stylesheet" href="style2.css">
+		<link rel="stylesheet" href="expensestyle.css">
 		<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500;700&family=Fredoka+One&family=Roboto:wght@400;700;900&family=Varela+Round&display=swap" rel="stylesheet">
 		
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -103,181 +103,191 @@
 
 	<body>
 		
-		<div class="navbar">
-				<div class="profile">
-					<img src="images/profile picture.png" alt="Profile Picture">
-					<p>John Doe</p>
-				</div>
-				<ul>
-					<li><a href="#">Profile</a></li>
-					<li><a href="home.php">Home</a></li>
-					<li><a href="budget.php" class="active">Budget</a></li>
-					<li><a href="expense.php">Expense</a></li>
-					<li>
-						<!--<a href="balance.php">Statistics</a>-->
-						<?php
-						$userStartDate = date('Y-m-01');
-						$userEndDate = date('Y-m-t');
-								
-						echo '<a class="dropdown-item" href="balance.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Statistics</a>';
-						?>
-					</li>
-					<li><a href="#">Notes</a></li>
-					<li><a href="#">Calendar</a></li>
-					<li><a href="settings.php">Settings</a></li>
-					<li><a href="logout.php">Log Out</a></li>
-				</ul>
-				<div class="logo">
-					<img src="images/Logo3.png" alt="Logo">
-				</div>
-			</div>
+	<div class="navbar">
+		<div class="profile">
+			<img src="images/profile pic.png" alt="Profile Picture">
+			<p>John Doe</p>
+		</div>
+		<ul>
+			<li><a href="#">Profile</a></li>
+			<li>
+        
+        <?php
+          $userStartDate = date('Y-m-d');
+		      $userEndDate = date('Y-m-d');
+                  
+          echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'" class="active">Home</a>';
+        ?>
+      </li>
+			<li><a href="budget.php">Budget</a></li>
+      <li><a href="expense.php">Expense</a></li>
+			<li>
+        
+        <?php
+          $userStartDate = date('Y-m-01');
+          $userEndDate = date('Y-m-t');
+                  
+          echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Statistics</a>';
+        ?>
+      </li>
+      <li><a href="#">Notes</a></li>
+      <li><a href="calendar.php">Calendar</a></li>
+      <li><a href="settings.php">Settings</a></li>
+      <li><a href="logout.php">Log Out</a></li>
+		</ul>
+        <div class="logo">
+            <img src="images/Logo3.png" alt="Logo">
+          </div>
+	</div>
 
 			<div class="box">
-				<form class="budget-form" method="post">
-						<h3>ADD BUDGET</h3>
+				
+
+						<form class="budget-form" method="post">
+							<h3>ADD BUDGET</h3>
 
 
-					<?php
-						if(isset($_SESSION['emptyFieldError'])) {
-									
-							echo '<div class="text-danger">'.$_SESSION['emptyFieldError'].'</div>';
-							unset($_SESSION['emptyFieldError']);
-						}
-					?>
-
-					<div class="">
-						<div class="">
-							<span class="">Amount</span>
-						</div>
-
-						<input class="amount" type="number" name="incomeAmount" step="0.01" value="<?php
-							if(isset($_SESSION['formIncomeAmount'])) {
+						<?php
+							if(isset($_SESSION['emptyFieldError'])) {
 										
-								echo $_SESSION['formIncomeAmount'];
-								unset($_SESSION['formIncomeAmount']);
+								echo '<div class="text-danger">'.$_SESSION['emptyFieldError'].'</div>';
+								unset($_SESSION['emptyFieldError']);
 							}
-						?>">
-					</div>
+						?>
 
-					<?php
-						if(isset($_SESSION['incomeAmountError'])) {
-									
-							echo '<div class="text-danger">'.$_SESSION['incomeAmountError'].'</div>';
-							unset($_SESSION['incomeAmountError']);
-						}
-					?>
 
-					
-								<div class="date">
-									<span class="">Date</span>
+						<div class="column">
+								<div class="amount-box">
+									<div class="amount">
+										<span class="">Amount</span>
+									</div>
+
+									<input class="amountinput" type="number" name="incomeAmount" step="0.01" value="<?php
+										if(isset($_SESSION['formIncomeAmount'])) {
+													
+											echo $_SESSION['formIncomeAmount'];
+											unset($_SESSION['formIncomeAmount']);
+										}
+									?>">
 								</div>
+
+
+											<?php
+												if(isset($_SESSION['incomeAmountError'])) {
+															
+													echo '<div class="text-danger">'.$_SESSION['incomeAmountError'].'</div>';
+													unset($_SESSION['incomeAmountError']);
+												}
+											?>
+
+								
+								<div class="date-box">
+									<div class="date">
+										<span class="">Date</span>
+									</div>
+											<?php
+											if(!isset($_SESSION['formIncomeDate'])) {
+												
+													echo "<script>$(document).ready(function(){getCurrentDate();})</script>";
+												}
+											?>
+											<input class="dateinput" type="date" id="dateInput" name="incomeDate" value="<?php
+												if(isset($_SESSION['formIncomeDate'])) {
+													
+													echo $_SESSION['formIncomeDate'];
+													//unset($_SESSION['formIncomeDate']);
+												}
+											?>" required>
+								</div>
+
+								<div class="category-box">
+									<div class="category">
+										<span class="input-group-text">Category</span>
+									</div>
+									<select class="categoryinput" name="incomeCategory">
+										<?php
+											foreach ($incomeCategoriesOfLoggedUser as $category) {
+											
+												if(isset($_SESSION['formIncomeCategory']) && $_SESSION['formIncomeCategory'] == $category['income_category']) {
+													
+													echo '<option selected>'.$category['income_category']."</option>";
+													unset($_SESSION['formIncomeCategory']);
+												} else {
+													
+													echo "<option>".$category['income_category']."</option>";
+												}
+											}
+										?>
+									</select>
+								</div>		
+					
+
+
+								<div class="comments-box">
+										<div class="comments">
+											<span class="input-group-text">Commments (optional)</span>
+										</div>
+										<textarea class="commentsinput" name="incomeComment" maxlength="100" rows="5"><?php
+												if(isset($_SESSION['formIncomeComment'])) {
+													
+													echo $_SESSION['formIncomeComment'];
+													unset($_SESSION['formIncomeComment']);
+												}
+											?></textarea>
+								</div>
+								
 								<?php
-								if(!isset($_SESSION['formIncomeDate'])) {
-									
-										echo "<script>$(document).ready(function(){getCurrentDate();})</script>";
+									if(isset($_SESSION['commentError'])) {
+										
+										echo '<div class="text-danger">'.$_SESSION['commentError'].'</div>';
+										unset($_SESSION['commentError']);
 									}
 								?>
-								<input class="dateinput" type="date" id="dateInput" name="incomeDate" value="<?php
-									if(isset($_SESSION['formIncomeDate'])) {
-										
-										echo $_SESSION['formIncomeDate'];
-										//unset($_SESSION['formIncomeDate']);
-									}
-								?>" required>
-				
 
-				
-								<div class="category">
-									<span class="input-group-text">Category</span>
-								</div>
-								<select class="categoryinput" name="incomeCategory">
-									<?php
-										foreach ($incomeCategoriesOfLoggedUser as $category) {
-										
-											if(isset($_SESSION['formIncomeCategory']) && $_SESSION['formIncomeCategory'] == $category['income_category']) {
-												
-												echo '<option selected>'.$category['income_category']."</option>";
-												unset($_SESSION['formIncomeCategory']);
-											} else {
-												
-												echo "<option>".$category['income_category']."</option>";
-											}
-										}
-									?>
-								</select>
-			
 
-					<div class="">
-								<div class="">
-									<span class="input-group-text">Commments<br />(optional)</span>
-								</div>
-								<textarea class="form-control userInput labeledInput" name="incomeComment" maxlength="100" rows="5"><?php
-										if(isset($_SESSION['formIncomeComment'])) {
-											
-											echo $_SESSION['formIncomeComment'];
-											unset($_SESSION['formIncomeComment']);
-										}
-									?></textarea>
-							</div>
-							
-							<?php
-								if(isset($_SESSION['commentError'])) {
-									
-									echo '<div class="text-danger">'.$_SESSION['commentError'].'</div>';
-									unset($_SESSION['commentError']);
-								}
-							?>
 
-					<div class="">
-							<button class="" type="submit">
-								<i class="icon-floppy"></i> Save
-							</button>
-							<a data-toggle="modal" data-target="#discardIncomeModal">
-								<button class="btn-lg mt-3 mb-2 mx-1 signButton bg-danger">
-									<i class="icon-cancel-circled"></i> Cancel
-								</button>
-							</a>
 						</div>
+
+								<div class="button-container">
+											<button class="saveButton" type="submit">
+												<i class="icon-floppy"></i> Save
+											</button>
+										<a data-toggle="modal" data-target="#discardExpenseModal">
+											<button id="cancelButton" class="cancelButton">
+												<i class="icon-cancel-circled"></i> Cancel
+											</button>
+										</a>
+								</div>
 							
-					</div>
+					
 					
 				</form>
+
+				</div>
 
 				<?php
 				if($_SESSION['incomeAdded']){
 					
 					echo "<script>$(document).ready(function(){ $('#incomeAdded').modal('show'); });</script>
 
-					<div class='modal fade' id='incomeAdded' role='dialog'>
-						<div class='modal-dialog col'>
-							<div class='modal-content'>
+
+				
+						
+							<div class='success'>
 								<div class='modal-header'>
 									<h3 class='modal-title'>New Income Added</h3>
-									<a href='budget.php'>
-									<button type='button' class='close'>&times;</button>
-									</a>
 								</div>
-												
-								<div class='modal-body'>
-									<p>Your income has been successfully added.</p>
-								</div>
-								<div class='modal-footer'>
-									<a href='home.php'>
-										<button type='button' class='btn btn-success'>OK</button>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>"; 
+								
+							</div>"; 
 				}
 			?>
 				
-				<div class="quit-income">
-					<h3>Quit Adding Income?</h3>
-					<p>Data you have entered so far will not be saved.</p>
-					<div class="buttons">
-					<a href="budget.php" class="btn-secondary">No</a>
-					<a href="menu.php" class="btn-primary">Yes</a>
+				<div id="popup" class="popup">
+					<div class="popup-content">
+						<h3>Quit adding expense?</h3>
+						<p>Your changes will not be saved.</p>
+						<button id="confirmBtn">Confirm</button>
+						<button id="cancelPopupBtn">Cancel</button>
 					</div>
 				</div>
 				</div>
@@ -285,6 +295,28 @@
 			</div>
 
 			</div>
+
+	<script>
+
+		function openPopup() {
+		document.getElementById('popup').style.display = "block";
+		}
+
+		function closePopup() {
+		document.getElementById('popup').style.display = "none";
+		}
+
+		document.getElementById('cancelButton').addEventListener('click', openPopup);
+		document.getElementById('cancelPopupBtn').addEventListener('click', closePopup);
+
+		const confirmBtn = document.getElementById('confirmBtn');
+
+		confirmBtn.addEventListener('click', function() {
+		window.location.href = 'home.php';
+		});
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="js/bootstrap.min.js"></script>
 	</body>
 
 	</html>

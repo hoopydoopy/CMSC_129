@@ -4,7 +4,7 @@ body{
     margin-left: 250px;
     background-color: #D6ECED;
     opacity: 100%;
-
+    font-family: "Poppins", sans-serif;
 }
 .navbar {
     height: 100%;
@@ -91,117 +91,38 @@ body{
     height: 50px;
   }
 
-  body {
-    font-family: "Poppins", sans-serif;
-  }
-
   .box {
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-left: 20px;
     margin-right: 10px; 
-    display: flex;
 
 
-  height: calc(100vh - 150px);
+    height: calc(100vh - 150px);
   }
-
-
 
   h3 {
 
-    font-size: 25px;
+    font-size: 100px;
     font-weight: bold;
     color: #333333;
     /* Add any additional styles you want */
   }
-
-
-  .budget-form{
+  
+  .form-columns{
     margin-left: 20px;
   }
 
-  .budget-form input[type="text"],
-.budget-form input[type="number"],
-.budget-form textarea {
-  margin-bottom: 10px;
-  width: 250%;
-  max-width: 400px; /* Adjust the maximum width as needed */
-}
-
-.amount{
-    font-size: 20px;
-    height: 40px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
-
-.date{
-    margin-top: 20px;
-
-}
-
-.dateinput{
-    height: 35px;
-    margin-top: 5px;
-}
-
-.category{
-    margin-top: 30px;
-}
-
-.categoryinput{
-    height: 35px;
-}
-
-.container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.left-column {
-  flex: 1;
-  padding-right: 20px;
-  flex-basis: 50%;
-}
-
-.right-column {
-
-  flex-basis: 50%;
-  flex: 1;
-  padding-left: 20px;
-  margin-top: 50px;
-}
-
-.comments {
-  width: 100%;
-}
-
-.box {
-  display: flex;
-}
-
-
-.comments {
-  margin-top: 100px;
-}
-
-.budget-form input[type="text"],
-.budget-form input[type="number"],
-.budget-form textarea {
-  width: 100%;
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .box {
-    flex-wrap: wrap;
+  .form-columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Single column */
+    grid-gap: 10px; /* Gap between elements */
   }
-  .left-column,
-  .right-column {
-    flex: 100%;
-    padding: 0;
+  
+  .form-columns .form-group {
+    grid-column: 1; /* Comments form group spans across two columns */
   }
-}
+  .form-columns .form-group.comments {
+    grid-column: 2 / span 2; 
+  }
