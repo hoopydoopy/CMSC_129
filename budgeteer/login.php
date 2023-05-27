@@ -1,14 +1,11 @@
 <?php
-	
 	session_start();
-	
 
 	if(isset($_SESSION['loggedUserId'])) {
 		
 		header('Location: home.php');	
 		exit();
 	}
-
 ?>
 
 <?php
@@ -88,16 +85,6 @@
 				
 				<input class="mt-3" type="submit" value="Login" data-toggle="modal" data-target="#dateModal">
 				
-
-				<!--
-					
-					<div>
-				<button class="mt-3 button" type="submit" data-toggle="modal" data-target="#dateModal">
-								Login
-				</button>
-				</div>
-				
-				-->
 			</form>
 		</div>
 		

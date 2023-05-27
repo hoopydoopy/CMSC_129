@@ -1,5 +1,6 @@
 <?php
 	session_start();
+
   $startDate = 00-00-00;
 	$endDate = 00-00-00;
  
@@ -32,11 +33,15 @@
 				
 				$_SESSION['badAttempt'] = "";
 				header ('Location: login.php');
-        //header ('Location: budget.php');
 				exit();
 			}
+    }else {
+
+      header ("Location: login.php");
+      exit();
     }
 	} 
+  
 ?>
 
 <?php
@@ -44,6 +49,9 @@
    if(isset($_SESSION['loggedUserId'])) {
      
      require_once 'database.php';
+
+     $startDate = date('Y-m-d', strtotime('today'));
+     $endDate = date('Y-m-d', strtotime('tomorrow - 1 second'));
      
      if(isset($_GET['userStartDate'])) {
        
@@ -57,6 +65,8 @@
          $endDate = $_GET['userEndDate'];
        }
        
+      }
+
        $expensesQuery = $db -> prepare(
        "SELECT e.category_id, ec.expense_category, SUM(e.expense_amount) AS expense_amount
        FROM expenses e NATURAL JOIN expense_categories ec
@@ -81,13 +91,6 @@
            var incomes = ".json_encode($incomesOfLoggedUser).";
            var expenses = ".json_encode($expensesOfLoggedUser)."
          </script>";
-       
-     } else {
-      $userStartDate = date('Y-m-d');
-	    $userEndDate = date('Y-m-d');
-       header ("Location: login.php");
-       exit();
-     }
    } 
 ?>
 
@@ -114,11 +117,12 @@
   
 	<div class="navbar">
 		<div class="profile">
+
 			<img src="images/profile pic.png" alt="Profile Picture">
+
 			<p>John Doe</p>
 		</div>
 		<ul>
-			<li><a href="#">Profile</a></li>
 			<li>
         
         <?php
@@ -170,7 +174,17 @@
             if (!$isCurrentDate) {
               echo '<a class="fas fa-chevron-right" onclick="changeDate(\''.$nextDate.'\')"></a>';
             }
+            
+            else {
+              echo '<a class="fas fa-chevron-right inactive"></a>';
+            }
           ?>
+          <style>
+            .inactive {
+              opacity: 0.5;
+              pointer-events: none;
+            }
+          </style>
 
           <script>
             function changeDate(date) {
@@ -214,18 +228,6 @@
             ?>
             
           </div>
-          
-
-          <?php
-            /*if($balance > 0) {
-              
-              echo '<div class="ml-3 text-success" id="result">Great!  You Manage Your Finances Very Well!</div>';
-            }
-            if ($balance < 0){
-              
-              echo '<div class="ml-3 text-danger" id="result">Watch Out! You Are Getting Into Debt!!</div>';
-            }*/
-          ?>
           
           <?php
             if(!empty($incomesOfLoggedUser)) {

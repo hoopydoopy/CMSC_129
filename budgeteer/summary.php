@@ -7,6 +7,15 @@
 	if(isset($_SESSION['loggedUserId'])) {
 		
 		require_once 'database.php';
+
+    $month = date('m');
+		$year = date('Y');
+
+		$startDate = date('Y-m-01', mktime(0, 0, 0, $month, 1, $year));
+
+		$endDate = date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
+
+
 		
 		if(isset($_GET['userStartDate'])) {
 			
@@ -19,6 +28,8 @@
 				$startDate = $_GET['userStartDate'];
 				$endDate = $_GET['userEndDate'];
 			}
+
+    }
 			
 			$expensesQuery = $db -> prepare(
 			"SELECT e.category_id, ec.expense_category, SUM(e.expense_amount) AS expense_amount
@@ -44,12 +55,7 @@
 					var incomes = ".json_encode($incomesOfLoggedUser).";
 					var expenses = ".json_encode($expensesOfLoggedUser)."
 				</script>";
-			
-		} else {
-			
-			header ("Location: home.php");
-			exit();
-		}
+
 	} else {
 
 		header ("Location: login.php");
@@ -75,11 +81,11 @@
   
 	<div class="navbar">
 		<div class="profile">
+
 			<img src="images/profile pic.png" alt="Profile Picture">
 			<p>John Doe</p>
 		</div>
 		<ul>
-			<li><a href="#">Profile</a></li>
 			<li>
         <?php
           $userStartDate = date('Y-m-d');
@@ -120,31 +126,18 @@
             
             $userStartDate = date('Y-m-d', strtotime('last Sunday', strtotime($today)));
             $userEndDate = date('Y-m-d', strtotime('next Saturday', strtotime($userStartDate)));
-              
-            //echo '<a class="button" href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Week</a>';
-            //echo '<button class="button" onclick="location.href=\'summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'\'">Week</button>';
-            //echo '<button class="button" onclick="updateDateRange(\''.$userStartDate.'\', \''.$userEndDate.'\', \'week\')">Week</button>';
-            
           ?>
           <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=week'">Week</button>
 
           <?php
             $userStartDate = date('Y-m-01');
             $userEndDate = date('Y-m-t');
-                      
-            //echo '<a class="button" href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Month</a>';
-            //echo '<button class="button" onclick="location.href=\'summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'\'">Month</button>';       
-            //echo '<button class="button" onclick="updateDateRange(\''.$userStartDate.'\', \''.$userEndDate.'\', \'month\')">Month</button>';
-  
           ?>
           <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=month'">Month</button>
+          
           <?php
             $userStartDate = date('Y-01-01');
             $userEndDate = date('Y-12-31');
-                      
-            //echo '<a class="button" href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Year</a>';
-            //echo '<button class="button" onclick="location.href=\'summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'\'">Year</button>';
-            //echo '<button class="button" onclick="updateDateRange(\''.$userStartDate.'\', \''.$userEndDate.'\', \'year\')">Year</button>';
           ?>
           <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=year'">Year</button>
 
@@ -154,6 +147,7 @@
             window.location.href = url;
           }
         </script>
+
         <br>
         
         <?php
@@ -181,9 +175,8 @@
       <?php
         $startDate = $_GET['userStartDate'] ?? $userStartDate;
         $endDate = $_GET['userEndDate'] ?? $userEndDate;
-        
-      // echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
       ?>
+
     </div>  
       
     <!--Custom Button -->
@@ -216,15 +209,9 @@
 									$expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
 									
 									foreach ($expensesOfSpecificCategory as $categoryExpense) {
-										
-										//echo "<tr><td class=\"date\">{$categoryExpense['expense_date']}</td>| ₱ <td class=\"amount\">{$categoryExpense['expense_amount']} | </td><td class=\"payment\">{$categoryExpense['payment_method']}</td>| <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td></tr>";
-                    //echo nl2br("=============");
                     $transExpenses++;
-
 									}
 								}
-                //$startDate = $_GET['userStartDate'] ?? $userStartDate;
-                //$endDate = $_GET['userEndDate'] ?? $userEndDate;
 
                 $userStartDate = $startDate;
                 $userEndDate = $endDate;
@@ -253,9 +240,9 @@
                   $prevPeriodLabel = 'previous year';
                   break;
                 default:
-                  $prevStartDate = '';
-                  $prevEndDate = '';
-                  $prevPeriodLabel = '';
+                  $prevStartDate = date('Y-m-01', strtotime('-1 month', strtotime($userStartDate)));
+                  $prevEndDate = date('Y-m-d', strtotime('last day of previous month', strtotime($userStartDate)));
+                  $prevPeriodLabel = 'previous month';
                   break;
               }
 
@@ -280,8 +267,7 @@
                 }
                 
               }
-              
-              
+            
             }
 
             // Calculate the percentage increase or decrease
@@ -403,10 +389,7 @@
     
           // Display the largest expense if found
       }
-
-      /*if ($largestExpenseItem) {
-        echo "₱{$largestExpenseItem['expense_amount']} ({$largestExpenseItem['expense_date']})";
-      }*/
+      
       if ($largestExpenseItem) {
         $formattedAmount = '₱ ' . number_format($largestExpenseItem['expense_amount'], 2);
         $formattedDate = date('F j, Y', strtotime($largestExpenseItem['expense_date']));

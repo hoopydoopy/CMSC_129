@@ -63,7 +63,7 @@
 			}
 		} else {
 
-			header ("Location: landing.php");
+			header ("Location: login.php");
 			exit();
 		}
 	?>
@@ -85,11 +85,6 @@
 		<script src="js/budget.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 		
-		<!--
-			<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/main.css">	
-		<link rel="stylesheet" href="css/fontello.css">
-		-->
 		
 		<link rel="stylesheet" href="expensestyle.css">
 		<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500;700&family=Fredoka+One&family=Roboto:wght@400;700;900&family=Varela+Round&display=swap" rel="stylesheet">
@@ -109,7 +104,6 @@
 			<p>John Doe</p>
 		</div>
 		<ul>
-			<li><a href="#">Profile</a></li>
 			<li>
         
         <?php
@@ -317,7 +311,7 @@
 			  $userEndDate = date('Y-m-d');
 			  echo "window.location.href = 'home.php?userStartDate=".$userStartDate."&userEndDate=".$userEndDate."';";
 		?>
-		//window.location.href = 'home.php';
+		
 		});
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
