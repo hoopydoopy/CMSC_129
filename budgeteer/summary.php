@@ -183,6 +183,51 @@
 
   <div class="container">
 
+  <div class="box small-box">
+        <div class="box-label">Gross Income </div>
+
+        <?php
+          $totalIncomes = 0;
+          $transIncomes = 0;
+                    
+          foreach ($incomesOfLoggedUser as $incomes) {
+                      
+                    echo "<tr class=\"summary\">
+                        
+                    <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
+                                            
+                                            
+                    </tr>";
+                    //echo nl2br("=============");
+
+                    $totalIncomes += $incomes['income_amount'];
+                                            
+                    $incomesTableRowsQuery = $db -> prepare(
+                    "SELECT income_date, income_amount, income_comment
+                    FROM incomes
+                    WHERE category_id=:incomeCategoryId AND user_id=:loggedUserId AND income_date BETWEEN :startDate AND :endDate
+                    ORDER BY income_date ASC");
+                    $incomesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':incomeCategoryId' => $incomes['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
+                                            
+                    $incomesOfSpecificCategory = $incomesTableRowsQuery -> fetchAll();
+                                            
+                    foreach ($incomesOfSpecificCategory as $categoryIncome) {
+                                                
+                        //echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td>| ₱ <td class=\"amount\">{$categoryIncome['income_amount']} | </td><td class=\"comment\">{$categoryIncome['income_comment']}</td>
+                        //</tr>";
+                            //echo nl2br("=============");
+                            $transIncomes ++;
+                    }
+          }
+                  
+          echo'<center>';
+          echo $totalIncomes;
+          echo'</center>';
+
+        ?>
+
+
+  </div>
 
   <div class="box small-box">
         <div class="box-label">Total Expenses </div>
@@ -294,54 +339,9 @@
               ?>
   </div>
 
-  <div class="box small-box">
-        <div class="box-label">Total Income </div>
-
-        <?php
-          $totalIncomes = 0;
-          $transIncomes = 0;
-                    
-          foreach ($incomesOfLoggedUser as $incomes) {
-                      
-                    echo "<tr class=\"summary\">
-                        
-                    <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
-                                            
-                                            
-                    </tr>";
-                    //echo nl2br("=============");
-
-                    $totalIncomes += $incomes['income_amount'];
-                                            
-                    $incomesTableRowsQuery = $db -> prepare(
-                    "SELECT income_date, income_amount, income_comment
-                    FROM incomes
-                    WHERE category_id=:incomeCategoryId AND user_id=:loggedUserId AND income_date BETWEEN :startDate AND :endDate
-                    ORDER BY income_date ASC");
-                    $incomesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':incomeCategoryId' => $incomes['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-                                            
-                    $incomesOfSpecificCategory = $incomesTableRowsQuery -> fetchAll();
-                                            
-                    foreach ($incomesOfSpecificCategory as $categoryIncome) {
-                                                
-                        //echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td>| ₱ <td class=\"amount\">{$categoryIncome['income_amount']} | </td><td class=\"comment\">{$categoryIncome['income_comment']}</td>
-                        //</tr>";
-                            //echo nl2br("=============");
-                            $transIncomes ++;
-                    }
-          }
-                    
-          // echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td>  </tr>";
-          echo'<center>';
-          echo "<tr class=\"summary\"><td class=\"total\">₱ </td><td class=\"sum\">{$totalIncomes} </td>  </tr>";
-          //echo"<br>Total Income Transaction: $transIncomes";
-          echo'</center>';
-        ?>
-
-  </div>
 
   <div class="box small-box">
-        <div class="box-label">Balance </div>
+        <div class="box-label">Net Savings </div>
         <?php	
             $totalIncomes = 0;
             $totalExpenses = 0;
@@ -354,60 +354,72 @@
               $totalExpenses += $expenses['expense_amount'];
             }
               $balance = $totalIncomes - $totalExpenses;
-              echo '<center><div id="balance">₱ '.$balance.'</div></center>';
+              echo '<center>₱ '.$balance.'</center>';
             ?>
   </div>
 
   <div class="box small-box">
-    <div class="box-label">Largest Spending </div>
+    <div class="box-label">Taxes </div>
 
     <?php
-      $largestExpense = 0;
-      $largestExpenseItem = null;
+      $totalIncomes = 0;
+      foreach ($incomesOfLoggedUser as $incomes) {
+                      
+        echo "<tr class=\"summary\">
+            
+        <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
+                                
+                                
+        </tr>";
+        //echo nl2br("=============");
 
-      foreach ($expensesOfLoggedUser as $expenses) {
-
-        $expensesTableRowsQuery = $db -> prepare(
-          "SELECT e.expense_date, e.expense_amount, pm.payment_method, e.expense_comment
-          FROM expenses e NATURAL JOIN payment_methods pm
-          WHERE e.category_id=:expenseCategoryId AND e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
-          ORDER BY e.expense_date ASC");
-          $expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-          
-          $expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
-
-          foreach ($expensesOfSpecificCategory as $categoryExpense) {
-            $expenseAmount = $categoryExpense['expense_amount'];
-    
-            if ($expenseAmount > $largestExpense) {
-              $largestExpense = $expenseAmount;
-              $largestExpenseItem = $categoryExpense;
-            }
-    
-            //echo "<tr><td class=\"date\">{$categoryExpense['expense_date']}</td>| ₱ <td class=\"amount\">{$categoryExpense['expense_amount']} | </td><td class=\"payment\">{$categoryExpense['payment_method']}</td>| <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td></tr>";
-          }
-    
-          // Display the largest expense if found
+        $totalIncomes += $incomes['income_amount'];
       }
+
       
-      if ($largestExpenseItem) {
-        $formattedAmount = '₱ ' . number_format($largestExpenseItem['expense_amount'], 2);
-        $formattedDate = date('F j, Y', strtotime($largestExpenseItem['expense_date']));
-        echo "<center>{$formattedAmount}</center>";
-        echo"<br>on {$formattedDate}";
+      $taxRate = 0;
+      $taxValue = 0;
+
+      if ($totalIncomes > 0 && $totalIncomes <= 250000) {
+          $taxRate = 0;
+      } elseif ($totalIncomes > 250000 && $totalIncomes <= 400000) {
+          $taxRate = 0.15;
+      } elseif ($totalIncomes > 400000 && $totalIncomes <= 800000) {
+          $taxRate = 0.2;
+      } elseif ($totalIncomes > 800000 && $totalIncomes <= 2000000) {
+          $taxRate = 0.25;
+      } elseif ($totalIncomes > 2000000 && $totalIncomes <= 8000000) {
+          $taxRate = 0.3;
+      } elseif ($totalIncomes > 8000000) {
+          $taxRate = 0.35;
       }
+      $taxValue = $totalIncomes * $taxRate;
+      echo'<center>';
+      echo $taxValue;
+      echo'</center>';
 
     ?>
+    
   </div>
 
   <div class="box small-box">
-        <div class="box-label">Total Transactions </div>
+        <div class="box-label">Total Transactions (expenses) </div>
         <?php
-        $totalTrans=$transIncomes + $transExpenses;
-        echo"<center> $totalTrans </center>";
+        //$totalTrans=$transIncomes + $transExpenses;
+        //echo"<center> $totalTrans </center>";
+        echo"<center> $transExpenses </center>";
         ?>
 
     </div>
+  <div class="box small-box">
+      <div class="box-label">Total Entries (incomes)</div>
+        <?php
+        //$totalTrans=$transIncomes + $transExpenses;
+        //echo"<center> $totalTrans </center>";
+        echo"<center> $transIncomes </center>";
+        ?>
+
+  </div>
     
   </div>
 
@@ -458,6 +470,34 @@
 
 
   <div class="container">
+
+  <div class="box small-box">
+    <div class="box-label">Expense to Income Ratio </div>
+
+    <?php
+      $eiRatio = 0;
+      $eiRatio = round(($totalIncomes / $totalExpenses) * 100);
+      echo'<center>';
+      echo $eiRatio.'%';
+      echo'</center>';
+
+    ?>
+    
+  </div>
+
+  <div class="box small-box">
+    <div class="box-label">Savings to Expense Ratio </div>
+
+    <?php
+      $siRatio = 0;
+      $siRatio = round(($totalExpenses / $totalIncomes) * 100);
+      echo'<center>';
+      echo $siRatio.'%';
+      echo'</center>';
+
+    ?>
+    
+  </div>
 
       <div class="box small-boxb">
         <div class="box-label">Expense History </div>
