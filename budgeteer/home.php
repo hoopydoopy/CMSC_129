@@ -209,9 +209,6 @@
 
           
           <!-- Statistics -->
-			
-        
-            
             <?php	
             $totalIncomes = 0;
             $totalExpenses = 0;
@@ -257,21 +254,21 @@
           <div id="incomeList" style="display: none; margin-left: 10px;" >
             <!-- Incomes -->
             <center><caption>Incomes</caption></center>	
-            <br>
             <tr>
                   
             </tr>
             
             <?php
 								$totalIncomes = 0;
-								
+								$incomeCount = 0;
 								foreach ($incomesOfLoggedUser as $incomes) {
 									
 									echo "<tr class=\"summary\">
                   
-                  <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
+                  <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> 
 									
-									
+									<td class=\"category\">Category: {$incomes['income_category']}</td>
+                  -->
 									</tr>";
 									
 									
@@ -295,15 +292,20 @@
                       <td class=\"amount\">{$categoryIncome['income_amount']}  </td>
                       </div>
                     <div class='incDate'>
-                      <td class=\"date\">{$categoryIncome['income_date']}</td> 
+                      <td class=\"date\">{$incomes['income_category']}</td> 
                       </div>
                     <div class='incComment'>
                       <td class=\"comment\">{$categoryIncome['income_comment']}<br></td>
                       </div>
 										</tr></div>";
-                    //echo nl2br("=============");
+                    
+                    $incomeCount++;
 									}
 								}
+
+                    if ($incomeCount<=0) {
+                      echo "<div class='expAmount'>No Incomes Recorded</div>";
+                  } 
 								
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td>
 						
@@ -322,14 +324,14 @@
 
               <?php
 								$totalExpenses = 0;
-								
+								$expenseCount = 0;
 								foreach ($expensesOfLoggedUser as $expenses) {
 									
 									echo "<tr class=\"summary\">
-                  <!--<td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\"> {$expenses['expense_amount']} ₱</td>-->
+                  <!--<td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\"> {$expenses['expense_amount']} ₱</td>
 									
-								
-									
+                  <td class=\"category\">Category: {$expenses['expense_category']}</td>
+									-->
 									</tr>";
                   
 									
@@ -343,28 +345,35 @@
 									$expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
 									
 									$expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
-									
-									foreach ($expensesOfSpecificCategory as $categoryExpense) {
-										
-										echo "<div class='exp'>
-                          <tr>
-                            
-                            <div class='expAmount'> ₱ 
-                              <td class=\"amount\" style='color: red;'>{$categoryExpense['expense_amount']}  </td> 
-                              </div>
-                            <div class='expPayment'>
-                              <td class=\"payment\">{$categoryExpense['payment_method']}</td> 
-                              </div> 
-                            <div class='expDate'>
-                              <td class=\"date\">{$categoryExpense['expense_date']}</td>
-                              </div> 
-                            <div class='expComment'> 
-                              <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>	
-                              </div>  
-										</tr> </div>";
+                  
+                  
+                    foreach ($expensesOfSpecificCategory as $categoryExpense) {
+                      
+                      echo "<div class='exp'>
+                            <tr>
+                              
+                              <div class='expAmount'> ₱ 
+                                <td class=\"amount\" style='color: red;'>{$categoryExpense['expense_amount']}  </td> 
+                                </div>
+                              <div class='expPayment'>
+                                <td class=\"payment\">{$categoryExpense['payment_method']}</td> 
+                                </div> 
+                              <div class='expDate'>
+                                <td class=\"date\">{$expenses['expense_category']}</td>
+                                </div> 
+                              <div class='expComment'> 
+                                <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>	
+                                </div>  
+                      </tr> </div>";
+                      $expenseCount ++;
+                    }
                     
-									}
 								}
+
+                //echo $expenseCount;
+                    if ($expenseCount<=0) {
+                      echo "<div class='expAmount'>No Expenses Recorded</div>";
+                  } 
 								
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalExpenses} ₱</td></tr>";
 							?>
