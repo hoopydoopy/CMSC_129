@@ -234,4 +234,12 @@ body{
     margin-left: 50px;
     }
 
-   
+  .calendar-container{
+      background-color: #fff;
+      
+      margin-left: 10px;
+  }
+
+  #calendar{
+    width: 8-vw;
+  }

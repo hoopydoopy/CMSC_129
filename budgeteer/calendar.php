@@ -18,7 +18,7 @@
         <script src="js/budget.js"></script>
 	  <link rel="stylesheet" type="text/css" href="homestyle.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css">
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css"> -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
@@ -65,15 +65,11 @@
 		</div>
 
         
-        <div class="ui container">
+        <div class="calendar-container">
 
-        <div class="ui container">
-        <div class="ui grid">
-        <div class="ui sixteen column">
-            <div id="calendar"></div>
-        </div>
-        </div>
-        </div>
+
+            <div id="calendar" class="calendar"></div>
+        
 
         </div>
 
