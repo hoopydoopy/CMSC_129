@@ -4,6 +4,7 @@ body{
     margin-left: 250px;
     background-color: #D6ECED;
     opacity: 100%;
+    font-family: "Poppins", sans-serif  ;
 
 }
 .navbar {
@@ -224,3 +225,13 @@ body{
   .stat_date {
     margin-right: 0;
   }
+
+  .income-chart, .expense-chart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 50px;
+    }
+
+   

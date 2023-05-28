@@ -210,7 +210,7 @@
           
           <!-- Statistics -->
 			
-          <div class="row col-sm-6 col-lg-4 justify-content-center mt-5 mb-2 mx-auto box">
+        
             
             <?php	
             $totalIncomes = 0;
@@ -227,17 +227,17 @@
               //echo '<center><div id="balance">BALANCE:&emsp;'.$balance.'</div></center>';
             ?>
             
-          </div>
+      
           
           <?php
             if(!empty($incomesOfLoggedUser)) {
               
-              echo '<div class="col-sm-8 col-lg-6 mt-4 mb-2 pt-2 pb-4 mx-auto box"><div id="piechart1"></div></div>';
+              echo '<div id="piechart1" class="income-chart"></div>';
             }
           
             if(!empty($expensesOfLoggedUser)) {
               
-              echo '<div class="col-sm-8 col-lg-6 my-3 pt-2 pb-4 mx-auto box"><div id="piechart2"></div></div>';
+              echo '<div id="piechart2" class="expense-chart"></div>';
             }
           ?>
 
@@ -247,8 +247,6 @@
         </div>
         <div class="box small-box">
           <div class="box-label">Transactions</div>
-          
-          <!-- Content for top small box here -->
           
             <!-- Incomes -->
             <center><caption>Incomes</caption></center>	
