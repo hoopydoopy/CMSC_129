@@ -247,7 +247,11 @@
         </div>
         <div class="box small-box">
           <div class="box-label">Transactions</div>
+
+          <button id="expenseBtn">Expenses</button>
+          <button id="incomeBtn">Incomes</button>
           
+          <div id="incomeList" style="display: none;">
             <!-- Incomes -->
             <center><caption>Incomes</caption></center>	
             <br>
@@ -294,10 +298,11 @@
 								
 								//</tr>";
 							?>
+            </div>
+
+          <div id="expenseList">
 
             <!-- Expenses -->
-            <br>
-            <br>
             <center><caption>Expenses</caption></center>	
             <br>
             <tr>
@@ -340,6 +345,31 @@
 								
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalExpenses} ₱</td></tr>";
 							?>
+          </div>
+
+          <script>
+            // Get references to the buttons and lists
+            const incomeBtn = document.getElementById('incomeBtn');
+            const expenseBtn = document.getElementById('expenseBtn');
+            const incomeList = document.getElementById('incomeList');
+            const expenseList = document.getElementById('expenseList');
+
+            // Show the expense list by default
+            expenseList.style.display = 'block';
+
+            // Event listeners for button clicks
+            incomeBtn.addEventListener('click', function() {
+              // Show income list and hide expense list
+              incomeList.style.display = 'block';
+              expenseList.style.display = 'none';
+            });
+
+            expenseBtn.addEventListener('click', function() {
+              // Show expense list and hide income list
+              expenseList.style.display = 'block';
+              incomeList.style.display = 'none';
+            });
+          </script>
           
         </div>
 
