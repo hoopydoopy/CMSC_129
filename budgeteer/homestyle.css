@@ -234,6 +234,38 @@ body{
     margin-left: 50px;
     }
 
+    .histBtns{
+      margin-left: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+  #expenseBtn, #incomeBtn{
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    
+    border-color: #1E6091;
+    border-radius: 5px;
+    background-color: #D6ECED;
+  }
+
+  #expenseBtn{
+    margin-right: 5px;
+  }
+
+  #expenseBtn:hover, #incomeBtn:hover{
+    transform: scale(1.15);
+  }
+
+  #expenseBtn.active, #incomeBtn.active{
+    background-color: #1E6091;
+    color: #fff;
+  }
+
+  #expenseBtn.active::after, #incomeBtn.active::after{
+    background-color: #1E6091;
+    color: #fff;
+  }
+
   .calendar-container{
       background-color: #fff;
       
@@ -243,3 +275,71 @@ body{
   #calendar{
     width: 8-vw;
   }
+#expenseList{
+  margin-left: 10px;
+  overflow-y: auto;
+  height: 73vh;
+}
+
+#incomeList{
+  margin-left: 10px;
+}
+
+.exp{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: left;
+}
+
+.expAmount{
+  color: red;
+  grid-column-start: 1;
+  grid-column-end: 1;
+}
+
+.expPayment{
+  grid-column-start: 2;
+  grid-column-end: 2;
+  justify-content: left;
+  align-items: self-start;
+}
+
+.expDate{
+  grid-column-start: 3;
+  grid-column-end: 3;
+
+}
+
+.expComment{
+  justify-content: left;
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  font-size: small;
+}
+
+.inc{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: left;
+}
+
+.incAmount{
+  color: green;
+  grid-column-start: 1;
+  grid-column-end: 1;
+}
+
+.incDate{
+  grid-column-start: 3;
+  grid-column-end: 3;
+
+}
+
+.incComment{
+  justify-content: left;
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  font-size: small;
+}

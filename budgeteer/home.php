@@ -247,18 +247,19 @@
         </div>
         <div class="box small-box">
           <div class="box-label">Transactions</div>
-
+          
+          <div class="histBtns">
           <button id="expenseBtn">Expenses</button>
           <button id="incomeBtn">Incomes</button>
-          
-          <div id="incomeList" style="display: none;">
+          </div>
+
+
+          <div id="incomeList" style="display: none; margin-left: 10px;" >
             <!-- Incomes -->
             <center><caption>Incomes</caption></center>	
             <br>
             <tr>
-              <th class="">Date</th>
-              <th class="">Amount</th>
-            <br>        
+                  
             </tr>
             
             <?php
@@ -272,7 +273,7 @@
 									
 									
 									</tr>";
-									echo nl2br("=============");
+									
 									
 									$totalIncomes += $incomes['income_amount'];
 									
@@ -287,8 +288,19 @@
 									
 									foreach ($incomesOfSpecificCategory as $categoryIncome) {
 										
-										echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td>| ₱ <td class=\"amount\">{$categoryIncome['income_amount']} | </td><td class=\"comment\">{$categoryIncome['income_comment']}<br></td>
-										</tr>";
+										echo "<div class='inc'>
+                    <tr>
+                    
+                    <div class='incAmount'>₱ 
+                      <td class=\"amount\">{$categoryIncome['income_amount']}  </td>
+                      </div>
+                    <div class='incDate'>
+                      <td class=\"date\">{$categoryIncome['income_date']}</td> 
+                      </div>
+                    <div class='incComment'>
+                      <td class=\"comment\">{$categoryIncome['income_comment']}<br></td>
+                      </div>
+										</tr></div>";
                     //echo nl2br("=============");
 									}
 								}
@@ -304,12 +316,9 @@
 
             <!-- Expenses -->
             <center><caption>Expenses</caption></center>	
-            <br>
+            
             <tr>
-              <th class="">Date</th>
-              <th class="">Amount</th>
-              <th class="">Payment Method</th>
-              <br>
+            
 
               <?php
 								$totalExpenses = 0;
@@ -322,7 +331,7 @@
 								
 									
 									</tr>";
-                  echo nl2br("=============");
+                  
 									
 									$totalExpenses += $expenses['expense_amount'];
 									
@@ -337,9 +346,23 @@
 									
 									foreach ($expensesOfSpecificCategory as $categoryExpense) {
 										
-										echo "<tr><td class=\"date\">{$categoryExpense['expense_date']}</td>| ₱ <td class=\"amount\">{$categoryExpense['expense_amount']} | </td><td class=\"payment\">{$categoryExpense['payment_method']}</td>| <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>	
-										</tr>";
-                    echo nl2br("=============");
+										echo "<div class='exp'>
+                          <tr>
+                            
+                            <div class='expAmount'> ₱ 
+                              <td class=\"amount\" style='color: red;'>{$categoryExpense['expense_amount']}  </td> 
+                              </div>
+                            <div class='expPayment'>
+                              <td class=\"payment\">{$categoryExpense['payment_method']}</td> 
+                              </div> 
+                            <div class='expDate'>
+                              <td class=\"date\">{$categoryExpense['expense_date']}</td>
+                              </div> 
+                            <div class='expComment'> 
+                              <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>	
+                              </div>  
+										</tr> </div>";
+                    
 									}
 								}
 								
