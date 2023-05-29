@@ -1,0 +1,87 @@
+<?php
+session_start(); // starts a session
+
+if (isset($_SESSION['loggedUserId'])) { // if user is logged in
+    require_once 'database.php';
+
+} else { // if user failed to login / user not in login page
+    header("Location: landing.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MyBudget - Your Personal Finance Manager</title>
+    <meta name="description" content="Track your income and expenses - avoid overspending!">
+    <meta name="keywords"
+          content="expense manager, budget planner, expense tracker, budgeting app, money manager, money management, personal finance management software, finance manager, saving planner">
+    <meta name="author" content="Magdalena Słomiany">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-Ua-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="homestyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500;700&family=Fredoka+One&family=Roboto:wght@400;700;900&family=Varela+Round&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="navbar">
+    <div class="profile">
+        <img src="images/profile picture.png" alt="Profile Picture">
+        <p>John Doe</p>
+    </div>
+    <ul>
+        <li><a href="#">Profile</a></li>
+        <li><a href="home.php">Home</a></li>
+        <li><a href="budget.php">Budget</a></li>
+        <li><a href="expense.php">Expense</a></li>
+        <li>
+            <?php
+            $userStartDate = date('Y-m-01');
+            $userEndDate = date('Y-m-t');
+            echo '<a class="dropdown-item" href="balance.php?userStartDate=' . $userStartDate . '&userEndDate=' . $userEndDate . '">Statistics</a>';
+            ?>
+        </li>
+        <li><a href="#">Notes</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="settings.php" class="active">Settings</a></li>
+    </ul>
+    <div class="logo">
+        <img src="images/Logo3.png" alt="Logo">
+    </div>
+</div>
+
+<?php // creates a connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "my_budget";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if (!$conn) { // failed to establish a connection
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+$user_id = $_SESSION['loggedUserId']; // session_id of a user (i.e. if he/she is logged in)
+$expense_id = $_GET['expense_id']; // gets expense_id from the database
+
+$sql = "SELECT * FROM expenses WHERE user_id = '$user_id'"; // query to get all columns from expenses tables for a specific user
+$result = mysqli_query($conn, $sql);
+
+if (isset($_GET['expense_id'])){ // if a specific expense is chosen
+    $id = $_GET['expense_id'];
+
+    $sql = "DELETE FROM expenses WHERE expense_id = $id"; // sql query that deletes the specific expense from the table
+    $result = mysqli_query($conn, $sql);
+    if ($result){ // after deleting, it redirects to summary.php file
+        header('location: summary.php');
+    }
+    else{
+        die(mysqli_error($conn));
+    }
+}
+?>
+
+</body>
+</html>
