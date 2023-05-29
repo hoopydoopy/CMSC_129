@@ -5,7 +5,7 @@
 	$endDate = 00-00-00;
 
 	if(isset($_SESSION['loggedUserId'])) {
-		
+
 		require_once 'database.php';
 
     $month = date('m');
@@ -16,21 +16,21 @@
 		$endDate = date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
 
 
-		
+
 		if(isset($_GET['userStartDate'])) {
-			
+
 			if($_GET['userStartDate'] > $_GET['userEndDate']) {
-				
+
 				$startDate = $_GET['userEndDate'];
 				$endDate = $_GET['userStartDate'];
 			} else {
-				
+
 				$startDate = $_GET['userStartDate'];
 				$endDate = $_GET['userEndDate'];
 			}
 
     }
-			
+
 			$expensesQuery = $db -> prepare(
 			"SELECT e.category_id, ec.expense_category, SUM(e.expense_amount) AS expense_amount
 			FROM expenses e NATURAL JOIN expense_categories ec
@@ -38,9 +38,9 @@
 			GROUP BY e.category_id
 			ORDER BY expense_amount DESC");
 			$expensesQuery -> execute([':loggedUserId'=> $_SESSION['loggedUserId'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-			
+
 			$expensesOfLoggedUser = $expensesQuery -> fetchAll();
-			
+
 			$incomesQuery = $db -> prepare(
 			"SELECT i.category_id, ic.income_category, SUM(i.income_amount) AS income_amount
 			FROM incomes i NATURAL JOIN income_categories ic
@@ -48,9 +48,9 @@
 			GROUP BY i.category_id
 			ORDER BY income_amount DESC");
 			$incomesQuery -> execute([':loggedUserId'=> $_SESSION['loggedUserId'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-			
+
 			$incomesOfLoggedUser = $incomesQuery -> fetchAll();
-			
+
 			echo "<script>
 					var incomes = ".json_encode($incomesOfLoggedUser).";
 					var expenses = ".json_encode($expensesOfLoggedUser)."
@@ -68,7 +68,7 @@
 <head>
 	<title>Statistics-Budgeteer</title>
 	  <link rel="stylesheet" type="text/css" href="summary1.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
@@ -78,7 +78,7 @@
 </head>
 
 <body onload="drawChart(incomes, expenses)" onresize="drawChart(incomes, expenses)">
-  
+
 	<div class="navbar">
 		<div class="profile">
 
@@ -88,14 +88,14 @@
 				$username = "root";
 				$password = "";
 				$dbname = "my_budget";
-				
+
 				$conn = new mysqli($servername, $username, $password, $dbname);
 
 				// Check connection
 				if (!$conn) {
 					die("Connection failed: " . mysqli_connect_error());
 				}
-			
+
 				$user_id = $_SESSION['loggedUserId'];
 				$sql = "SELECT first_name FROM users WHERE user_id = '$user_id'";
 				$result =  mysqli_query($conn, $sql);
@@ -114,7 +114,7 @@
         <?php
           $userStartDate = date('Y-m-d');
 		      $userEndDate = date('Y-m-d');
-                  
+
           echo '<a href="home.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'">Home</a>';
         ?>
       </li>
@@ -124,7 +124,7 @@
         <?php
           $userStartDate = date('Y-m-01');
           $userEndDate = date('Y-m-t');
-                  
+
           echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'.&period=month" class="active">Statistics</a>';
         ?>
       </li>
@@ -142,12 +142,12 @@
 
 <div class="container">
       <div class="center-div" >
-      
-      
+
+
         <div class="date-buttons">
               <?php
                 $today = date('Y-m-d');
-                
+
                 $userStartDate = date('Y-m-d', strtotime('last Sunday', strtotime($today)));
                 $userEndDate = date('Y-m-d', strtotime('next Saturday', strtotime($userStartDate)));
               ?>
@@ -158,7 +158,7 @@
                 $userEndDate = date('Y-m-t');
               ?>
               <button class="monthButton" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=month'">Month</button>
-        
+
               <?php
                 $userStartDate = date('Y-01-01');
                 $userEndDate = date('Y-12-31');
@@ -172,7 +172,7 @@
             window.location.href = url;
           }
         </script>
-        
+
         <div class="date-range">
             <?php
             echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
@@ -193,17 +193,17 @@
               $endDate = $_GET['userEndDate'] ?? $userEndDate;
             ?>
 
-            </div> 
+            </div>
       </div>
 
-  
+
 
   <!--Week, Month, Year Button -->
 
     <!--Custom Button -->
 
-  
-      
+
+
     <!--Custom Button -->
 
   <div class="container-upper">
@@ -214,37 +214,37 @@
         <?php
           $totalIncomes = 0;
           $transIncomes = 0;
-                    
+
           foreach ($incomesOfLoggedUser as $incomes) {
-                      
+
                     echo "<tr class=\"summary\">
-                        
+
                     <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
-                                            
-                                            
+
+
                     </tr>";
                     //echo nl2br("=============");
 
                     $totalIncomes += $incomes['income_amount'];
-                                            
+
                     $incomesTableRowsQuery = $db -> prepare(
                     "SELECT income_date, income_amount, income_comment
                     FROM incomes
                     WHERE category_id=:incomeCategoryId AND user_id=:loggedUserId AND income_date BETWEEN :startDate AND :endDate
                     ORDER BY income_date ASC");
                     $incomesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':incomeCategoryId' => $incomes['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-                                            
+
                     $incomesOfSpecificCategory = $incomesTableRowsQuery -> fetchAll();
-                                            
+
                     foreach ($incomesOfSpecificCategory as $categoryIncome) {
-                                                
+
                         //echo "<tr><td class=\"date\">{$categoryIncome['income_date']}</td>| ₱ <td class=\"amount\">{$categoryIncome['income_amount']} | </td><td class=\"comment\">{$categoryIncome['income_comment']}</td>
                         //</tr>";
                             //echo nl2br("=============");
                             $transIncomes ++;
                     }
           }
-                  
+
           echo'<div class="stat-amount"><center>₱ ';
           echo $totalIncomes;
           echo'</center></div>';
@@ -259,25 +259,25 @@
             <?php
                     $totalExpenses = 0;
                     $transExpenses = 0;
-                    
+
                     foreach ($expensesOfLoggedUser as $expenses) {
-                      
+
                       echo "<tr class=\"summary\">
                       <!--<td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\"> {$expenses['expense_amount']} ₱</td>-->
-      
+
                       </tr>";
 
                       $totalExpenses += $expenses['expense_amount'];
-                      
+
                       $expensesTableRowsQuery = $db -> prepare(
                       "SELECT e.expense_date, e.expense_amount, pm.payment_method, e.expense_comment
                       FROM expenses e NATURAL JOIN payment_methods pm
                       WHERE e.category_id=:expenseCategoryId AND e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
                       ORDER BY e.expense_date ASC");
                       $expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-                      
+
                       $expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
-                      
+
                       foreach ($expensesOfSpecificCategory as $categoryExpense) {
                         $transExpenses++;
                       }
@@ -285,7 +285,7 @@
 
                     $userStartDate = $startDate;
                     $userEndDate = $endDate;
-                    
+
                   // Get expenses for the previous time period based on the selected button
                 $prevExpenses = 0;
                 $prevPeriodLabel = '';
@@ -333,11 +333,11 @@
                     if ($prevExpensesResult && $prevExpensesResult['total_expenses']) {
                       $prevExpenses = $prevExpensesResult['total_expenses'];
                       //echo $prevExpenses;
-                      
+
                     }
-                    
+
                   }
-                
+
                 }
 
                 // Calculate the percentage increase or decrease
@@ -367,13 +367,13 @@
 
         <div class="netSavings">
               <div class="box-label">Net Savings </div>
-              <?php	
+              <?php
                   $totalIncomes = 0;
                   $totalExpenses = 0;
-                          
+
                   foreach ($incomesOfLoggedUser as $incomes) {
                     $totalIncomes += $incomes['income_amount'];
-                    
+
                   }
                   foreach ($expensesOfLoggedUser as $expenses) {
                     $totalExpenses += $expenses['expense_amount'];
@@ -389,19 +389,19 @@
           <?php
             $totalIncomes = 0;
             foreach ($incomesOfLoggedUser as $incomes) {
-                            
+
               echo "<tr class=\"summary\">
-                  
+
               <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
-                                      
-                                      
+
+
               </tr>";
               //echo nl2br("=============");
 
               $totalIncomes += $incomes['income_amount'];
             }
 
-            
+
             $taxRate = 0;
             $taxValue = 0;
 
@@ -424,26 +424,26 @@
             echo'</center></div>';
 
           ?>
-          
+
         </div>
 
-      
-        
+
+
   </div>
 
 
   <div class="container-chart">
 
 
-          
-            
-            <?php	
+
+
+            <?php
             $totalIncomes = 0;
             $totalExpenses = 0;
-                    
+
             foreach ($incomesOfLoggedUser as $incomes) {
               $totalIncomes += $incomes['income_amount'];
-              
+
             }
             foreach ($expensesOfLoggedUser as $expenses) {
               $totalExpenses += $expenses['expense_amount'];
@@ -451,25 +451,25 @@
               $balance = $totalIncomes - $totalExpenses;
               //echo '<center><div id="balance">BALANCE:&emsp;'.$balance.'</div></center>';
             ?>
-            
-          
-          
+
+
+
           <?php
             if(!empty($incomesOfLoggedUser)) {
-              
+
               echo '<div class="incomeChart"><div id="piechart1"></div></div>';
             }
-          
+
             if(!empty($expensesOfLoggedUser)) {
-              
+
               echo '<div class="expenseChart"><div id="piechart2"></div></div>';
             }
           ?>
 
           <!-- End of Statistics -->
- 
 
-      
+
+
   </div>
 
 
@@ -488,7 +488,7 @@
           echo'</center></div>';
 
         ?>
-        
+
       </div>
 
       <div class="savings-to-exp">
@@ -504,119 +504,149 @@
           echo'</center></div>';
 
         ?>
-        
+
       </div>
 
       <div class="exp-history">
         <div class="box-label">Expense History </div>
-        
+
             <!-- Expenses -->
-            	
+
             <br>
-            
+
               <?php
 								$totalExpenses = 0;
-								
+
 								foreach ($expensesOfLoggedUser as $expenses) {
-									
-									
+
+
                   //echo nl2br("=============");
-									
+
 									$totalExpenses += $expenses['expense_amount'];
-									
+
 									$expensesTableRowsQuery = $db -> prepare(
-									"SELECT e.expense_date, e.expense_amount, pm.payment_method, e.expense_comment
+									"SELECT *
 									FROM expenses e NATURAL JOIN payment_methods pm
 									WHERE e.category_id=:expenseCategoryId AND e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
 									ORDER BY e.expense_date ASC");
 									$expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-									
+
 									$expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
-									
+
 									foreach ($expensesOfSpecificCategory as $categoryExpense) {
-										
+
 										echo "<div class='exp'>
                     <tr>
-                      
-                      <div class='expAmount'> ₱ 
-                        <td class=\"amount\" style='color: red;'>{$categoryExpense['expense_amount']}  </td> 
+
+                      <div class='expAmount'> ₱
+                        <td class=\"amount\" style='color: red;'>{$categoryExpense['expense_amount']}  </td>
                         </div>
                       <div class='expPayment'>
-                        <td class=\"payment\">{$categoryExpense['payment_method']}</td> 
-                        </div> 
+                        <td class=\"payment\">{$categoryExpense['payment_method']}</td>
+                        </div>
                       <div class='expCategory'>
                         <td class=\"date\">{$expenses['expense_category']}</td>
-                        </div> 
+                        </div>
                       <div class='expDate'>
                         <td class=\"date\">{$categoryExpense['expense_date']}</td>
                       </div>
-                      <div class='expComment'> 
-                        <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>	
-                        </div>  
-                      
-              </tr> </div>";
+                      <div class='expComment'>
+                        <td class=\"comment\">{$categoryExpense['expense_comment']}<br></td>
+                        </div>
+
+              </tr>
+              <td>
+              <div class=\"col-md-11\">
+              <a href=\"change_expense.php?expense_id={$categoryExpense['expense_id']});\">
+                  <button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"button\">
+                    <i class=\"icon-floppy\"></i> Edit
+                  </button>
+                </a>
+                <a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
+                <a href=\"delete_expense.php?expense_id={$categoryExpense['expense_id']};\">
+                  <button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+                    <i class=\"icon-cancel-circled\"></i> Delete
+                  </button>
+                </a>
+              </div>
+               </div>";
                     //echo nl2br("=============");
 									}
                   echo'<br>';
 								}
-								
+
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalExpenses} ₱</td></tr>";
 							?>
-          
+
       </div>
 
       <div class="inc-history">
         <div class="box-label">Income History </div>
-       
+
             <br>
-            
-            
+
+
             <?php
 								$totalIncomes = 0;
-								
+
 								foreach ($incomesOfLoggedUser as $incomes) {
-									
+
 									//echo nl2br("=============");
-									
+
 									$totalIncomes += $incomes['income_amount'];
-									
+
 									$incomesTableRowsQuery = $db -> prepare(
-									"SELECT income_date, income_amount, income_comment
+									"SELECT *
 									FROM incomes
 									WHERE category_id=:incomeCategoryId AND user_id=:loggedUserId AND income_date BETWEEN :startDate AND :endDate
 									ORDER BY income_date ASC");
 									$incomesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':incomeCategoryId' => $incomes['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-									
+
 									$incomesOfSpecificCategory = $incomesTableRowsQuery -> fetchAll();
-									
+
 									foreach ($incomesOfSpecificCategory as $categoryIncome) {
-										
+
 										echo "<div class='inc'>
                     <tr>
-                    
-                    <div class='incAmount'>₱ 
+
+                    <div class='incAmount'>₱
                       <td class=\"amount\">{$categoryIncome['income_amount']}  </td>
                       </div>
                       <div class='incCategory'>
                       <td class=\"comment\">{$incomes['income_category']}<br></td>
                       </div>
                     <div class='incDate'>
-                      <td class=\"date\">{$categoryIncome['income_date']}</td> 
+                      <td class=\"date\">{$categoryIncome['income_date']}</td>
                       </div>
-                    
+
                     <div class='incComment'>
                       <td class=\"comment\">{$categoryIncome['income_comment']}<br></td>
                       </div>
-										</tr></div>";
-                    
+										</tr>
+										<td>
+										<div class=\"col-md-11\">
+										<a href=\"change_income.php?income_id={$categoryIncome['income_id']});\">
+												<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"button\">
+													<i class=\"icon-floppy\"></i> Edit
+												</button>
+											</a>
+											<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
+											<a href=\"delete_income.php?income_id={$categoryIncome['income_id']};\">
+												<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+													<i class=\"icon-cancel-circled\"></i> Delete
+												</button>
+											</a>
+										</div>
+                    </div>";
+
                     //echo nl2br("=============");
 									}
                   echo'<br>';
 								}
-								
+
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td>
-						
-								
+
+
 								//</tr>";
 							?>
       </div>
@@ -634,7 +664,7 @@
 
 </html>
 
-<!-- 
+<!--
 <div class="box small-box">
         <div class="box-label">Total Transactions (expenses) </div>
         <?php
@@ -658,11 +688,11 @@
 
 <?php
             /*if($balance > 0) {
-              
+
               echo '<div class="ml-3 text-success" id="result">Great!  You Manage Your Finances Very Well!</div>';
             }
             if ($balance < 0){
-              
+
               echo '<div class="ml-3 text-danger" id="result">Watch Out! You Are Getting Into Debt!!</div>';
             }*/
           ?>
@@ -671,7 +701,7 @@
                 $prevMonthStartDate = date('Y-m-d', strtotime('first day of previous month'));
                 $prevMonthEndDate = date('Y-m-d', strtotime('last day of previous month'));
                 $prevMonthExpenses = 0;
-              
+
                 $prevMonthExpensesQuery = $db->prepare("
                   SELECT SUM(expense_amount) AS total_expenses
                   FROM expenses
@@ -683,12 +713,12 @@
                   ':prevStartDate' => $prevMonthStartDate,
                   ':prevEndDate' => $prevMonthEndDate
                 ]);
-              
+
                 $prevMonthExpensesResult = $prevMonthExpensesQuery->fetch(PDO::FETCH_ASSOC);
                 if ($prevMonthExpensesResult && $prevMonthExpensesResult['total_expenses']) {
                   $prevMonthExpenses = $prevMonthExpensesResult['total_expenses'];
                 }
-              
+
                   // Calculate the percentage increase or decrease
                 $percentageChange = 0;
                 if ($prevMonthExpenses != 0) {
