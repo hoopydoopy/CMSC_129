@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+
+body{
+    margin-left: 250px;
+    background-color: #D6ECED;
+    opacity: 100%;
+    font-family: "Poppins", sans-serif  ;
+
+}
+.navbar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #34A0A4;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+  
+  .profile img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .profile p {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar li a {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    padding: 15px 30px; /* Updated padding values */
+    text-decoration: none;
+    font-size: 18px; /* Added font-size property */
+    margin-left: 10px; /* Added margin-left property */
+  }
+  
+  .navbar li a:hover {
+    background-color: #52B69A;
+  }
+  
+  .navbar li a.active {
+    font-size: 25px;
+    color: white;
+    position: relative;
+  }
+  
+  .navbar li a.active::after {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 80%;
+    position: absolute;
+    top: 10%;
+    right: 0;
+    background-color: white;
+    border-radius: 5px;
+  }
+
+  .logo {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .logo img {
+    width: 200px;
+    height: 50px;
+  }
+  
+  .center-div{  
+    width: 20vw;
+    margin-left: 40%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .date-buttons{
+    
+    width: 100%;
+    display: grid;
+    border-color: #34A0A4;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .weekButton, .monthButton, .yearButton{
+    background-color: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border-style: solid;
+    border-color: #095154;
+    box-shadow: none;
+  }
+  .weekButton:hover, .monthButton:hover, .yearButton:hover{
+    background-color: #34A0A4;
+  }
+  .weekButton{
+    border-top-left-radius: 8px ;
+    border-bottom-left-radius: 8px ;
+
+  }
+
+  .monthButton{
+    border-left: none;
+    border-right: none;
+  }
+
+  .yearButton{
+    border-top-right-radius: 8px ;
+    border-bottom-right-radius: 8px ;
+  }
+
+
+  .date-range{
+    display: inline-block;
+  }
+
+  .date-range-input{
+    font-family: "Poppins", sans-serif;
+    color: #34A0A4;
+    font-size: x-small;
+    border-style: solid;
+    border-color: #34A0A4;
+    border-radius: 5px;
+  }
+
+  .date-range-saveBtn{
+    font-weight: bold;
+    background-color: #34A0A4;
+    color: #fff;
+    border-color: #095154;
+    border-style: solid;
+    border-radius: 5px;
+  }
+  .date-range-saveBtn:hover{
+    background-color: #095154;
+  }
+  .container-upper{
+    color: #095154;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .box-label{
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 10px;
+
+  }
+  .grossIncome, .totalExpense, .netSavings, .taxes{
+    background-color: #fff;
+    border-radius: 10px;
+    width: 19vw;
+  }
+
+  .grossIncome{
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  .totalExpense{
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  .netSavings{
+    grid-column-start: 3;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  .taxes{
+    grid-column-start: 4;
+    grid-column-end: 4  ;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  .stat-amount{
+    font-size: larger;
+    font-weight: bold;
+  }
+  .change-per{
+    margin-left: 5px;
+    font-size: small;
+  }
+
+
+  .container-chart{
+    background-color: #fff;
+    color: #095154;
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    width: 77vw;
+  }
+
+  .incomeChart{
+    color: #095154;
+    margin-left: 10px;
+    border-right: 1px solid #34A0A4 ;
+  }
+
+  .expenseChart{
+    color: #095154;
+    margin-left: 15px;
+  }
+
+  .container-lower{
+    color: #095154;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    margin-left: 20px;
+  }
+
+  .exp-to-inc, .savings-to-exp{
+    background-color: #fff;
+    border-radius: 10px;
+    height: 20vh;
+  }
+
+  .exp-to-inc{
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  .savings-to-exp{
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }

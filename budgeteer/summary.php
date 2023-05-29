@@ -67,7 +67,7 @@
 <html>
 <head>
 	<title>Statistics-Budgeteer</title>
-	  <link rel="stylesheet" type="text/css" href="homestyle.css">
+	  <link rel="stylesheet" type="text/css" href="summary1.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,74 +116,75 @@
 
 <!--Week, Month, Year Button -->
 
-  <div class="container">
-      <div class="center-div">
+  
+      <div class="center-div" >
       
       
-    
-          <?php
-            $today = date('Y-m-d');
-            
-            $userStartDate = date('Y-m-d', strtotime('last Sunday', strtotime($today)));
-            $userEndDate = date('Y-m-d', strtotime('next Saturday', strtotime($userStartDate)));
-          ?>
-          <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=week'">Week</button>
+        <div class="date-buttons">
+              <?php
+                $today = date('Y-m-d');
+                
+                $userStartDate = date('Y-m-d', strtotime('last Sunday', strtotime($today)));
+                $userEndDate = date('Y-m-d', strtotime('next Saturday', strtotime($userStartDate)));
+              ?>
+              <button class="weekButton" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=week'">Week</button>
 
-          <?php
-            $userStartDate = date('Y-m-01');
-            $userEndDate = date('Y-m-t');
-          ?>
-          <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=month'">Month</button>
-          
-          <?php
-            $userStartDate = date('Y-01-01');
-            $userEndDate = date('Y-12-31');
-          ?>
-          <button class="button" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=year'">Year</button>
-
-        <script>
-          function updateDateRange(startDate, endDate, timePeriod) {
-            var url = 'summary.php?userStartDate=' + startDate + '&userEndDate=' + endDate + '&timePeriod=' + timePeriod;
-            window.location.href = url;
-          }
-        </script>
-
-        <br>
+              <?php
+                $userStartDate = date('Y-m-01');
+                $userEndDate = date('Y-m-t');
+              ?>
+              <button class="monthButton" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=month'">Month</button>
         
-        <?php
-        echo'<br>';
-        echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
-        ?>
+              <?php
+                $userStartDate = date('Y-01-01');
+                $userEndDate = date('Y-12-31');
+              ?>
+              <button class="yearButton" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=year'">Year</button>
+        </div>
+
+                  <script>
+                    function updateDateRange(startDate, endDate, timePeriod) {
+                      var url = 'summary.php?userStartDate=' + startDate + '&userEndDate=' + endDate + '&timePeriod=' + timePeriod;
+                      window.location.href = url;
+                    }
+                  </script>
+        
+        <div class="date-range">
+            <?php
+            echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
+            ?>
+        </div>
+
+            <div class="test">
+
+            <!-- -->
+            <form action="summary.php" method="GET" >
+              <input class="date-range-input" type="date" name="userStartDate" required>
+              <input class="date-range-input" type="date" name="userEndDate" required>
+              <button type="submit" class="date-range-saveBtn">Save</button>
+            </form>
+
+            <?php
+              $startDate = $_GET['userStartDate'] ?? $userStartDate;
+              $endDate = $_GET['userEndDate'] ?? $userEndDate;
+            ?>
+
+            </div> 
       </div>
-  </div>
+
+  
 
   <!--Week, Month, Year Button -->
 
     <!--Custom Button -->
 
-    <div>
-
-      <!-- -->
-      <form action="summary.php" method="GET">
-        <input type="date" name="userStartDate" required>
-        <input type="date" name="userEndDate" required>
-        <button type="submit" class="button">Save</button>
-      </form>
-
-      <br>
-      
-      <?php
-        $startDate = $_GET['userStartDate'] ?? $userStartDate;
-        $endDate = $_GET['userEndDate'] ?? $userEndDate;
-      ?>
-
-    </div>  
+  
       
     <!--Custom Button -->
 
-  <div class="container">
+  <div class="container-upper">
 
-  <div class="box small-box">
+  <div class="grossIncome">
         <div class="box-label">Gross Income </div>
 
         <?php
@@ -220,220 +221,197 @@
                     }
           }
                   
-          echo'<center>';
+          echo'<div class="stat-amount"><center>₱ ';
           echo $totalIncomes;
-          echo'</center>';
+          echo'</center></div>';
 
         ?>
 
 
   </div>
 
-  <div class="box small-box">
-        <div class="box-label">Total Expenses </div>
-        <?php
-								$totalExpenses = 0;
-                $transExpenses = 0;
-								
-								foreach ($expensesOfLoggedUser as $expenses) {
-									
-									echo "<tr class=\"summary\">
-                  <!--<td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\"> {$expenses['expense_amount']} ₱</td>-->
-	
-									</tr>";
-
-									$totalExpenses += $expenses['expense_amount'];
-									
-									$expensesTableRowsQuery = $db -> prepare(
-									"SELECT e.expense_date, e.expense_amount, pm.payment_method, e.expense_comment
-									FROM expenses e NATURAL JOIN payment_methods pm
-									WHERE e.category_id=:expenseCategoryId AND e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
-									ORDER BY e.expense_date ASC");
-									$expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
-									
-									$expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
-									
-									foreach ($expensesOfSpecificCategory as $categoryExpense) {
-                    $transExpenses++;
-									}
-								}
-
-                $userStartDate = $startDate;
-                $userEndDate = $endDate;
-                
-               // Get expenses for the previous time period based on the selected button
-            $prevExpenses = 0;
-            $prevPeriodLabel = '';
-
-            if (isset($_GET['period'])) {
-              $period = $_GET['period'];
-
-              switch ($period) {
-                case 'week':
-                  $prevStartDate = date('Y-m-d', strtotime('-1 week', strtotime($userStartDate)));
-                  $prevEndDate = date('Y-m-d', strtotime('-1 day', strtotime($userEndDate)));
-                  $prevPeriodLabel = 'previous week';
-                  break;
-                case 'month':
-                  $prevStartDate = date('Y-m-01', strtotime('-1 month', strtotime($userStartDate)));
-                  $prevEndDate = date('Y-m-d', strtotime('last day of previous month', strtotime($userStartDate)));
-                  $prevPeriodLabel = 'previous month';
-                  break;
-                case 'year':
-                  $prevStartDate = date('Y-m-d', strtotime('-1 year', strtotime($userStartDate)));
-                  $prevEndDate = date('Y-m-d', strtotime('-1 day', strtotime('last day of previous year', strtotime($userStartDate))));
-                  $prevPeriodLabel = 'previous year';
-                  break;
-                default:
-                  $prevStartDate = date('Y-m-01', strtotime('-1 month', strtotime($userStartDate)));
-                  $prevEndDate = date('Y-m-d', strtotime('last day of previous month', strtotime($userStartDate)));
-                  $prevPeriodLabel = 'previous month';
-                  break;
-              }
-
-              if (!empty($prevStartDate) && !empty($prevEndDate)) {
-                $prevExpensesQuery = $db->prepare("
-                  SELECT SUM(expense_amount) AS total_expenses
-                  FROM expenses
-                  WHERE user_id = :loggedUserId
-                    AND expense_date BETWEEN :prevStartDate AND :prevEndDate
-                ");
-                $prevExpensesQuery->execute([
-                  ':loggedUserId' => $_SESSION['loggedUserId'],
-                  ':prevStartDate' => $prevStartDate,
-                  ':prevEndDate' => $prevEndDate
-                ]);
-
-                $prevExpensesResult = $prevExpensesQuery->fetch(PDO::FETCH_ASSOC);
-                if ($prevExpensesResult && $prevExpensesResult['total_expenses']) {
-                  $prevExpenses = $prevExpensesResult['total_expenses'];
-                  //echo $prevExpenses;
-                  
-                }
-                
-              }
-            
-            }
-
-            // Calculate the percentage increase or decrease
-            $percentageChange = 0;
-            if ($prevExpenses != 0) {
-              $percentageChange = round((($totalExpenses - $prevExpenses) / $prevExpenses) * 100);
-            }
-
-            // Determine if there's an increase or decrease
-            $changeIndicator = '';
-            if ($percentageChange > 0) {
-              $changeIndicator = 'Increase';
-            } elseif ($percentageChange < 0) {
-              $changeIndicator = 'Decrease';
-            } else {
-              $changeIndicator = 'Change';
-            }
-
-            // Display the total expenses, percentage change, and change indicator
-            echo '<center>';
-            echo "<tr class=\"summary\"><td class=\"total\">₱ </td><td class=\"sum\">{$totalExpenses}</td></tr>";
-            echo '</center>';
-            echo "<tr class=\"summary\"><td class=\"indicator\"></td><td class=\"indicator\">{$percentageChange}% {$changeIndicator} from {$prevPeriodLabel}</td></tr>";
-              ?>
-  </div>
-
-
-  <div class="box small-box">
-        <div class="box-label">Net Savings </div>
-        <?php	
-            $totalIncomes = 0;
-            $totalExpenses = 0;
+      <div class="totalExpense">
+            <div class="box-label">Total Expenses </div>
+            <?php
+                    $totalExpenses = 0;
+                    $transExpenses = 0;
                     
-            foreach ($incomesOfLoggedUser as $incomes) {
-              $totalIncomes += $incomes['income_amount'];
-              
-            }
-            foreach ($expensesOfLoggedUser as $expenses) {
-              $totalExpenses += $expenses['expense_amount'];
-            }
-              $balance = $totalIncomes - $totalExpenses;
-              echo '<center>₱ '.$balance.'</center>';
-            ?>
-  </div>
-
-  <div class="box small-box">
-    <div class="box-label">Taxes </div>
-
-    <?php
-      $totalIncomes = 0;
-      foreach ($incomesOfLoggedUser as $incomes) {
+                    foreach ($expensesOfLoggedUser as $expenses) {
                       
-        echo "<tr class=\"summary\">
-            
-        <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
-                                
-                                
-        </tr>";
-        //echo nl2br("=============");
+                      echo "<tr class=\"summary\">
+                      <!--<td class=\"category\">{$expenses['expense_category']}</td><td class=\"sum\"> {$expenses['expense_amount']} ₱</td>-->
+      
+                      </tr>";
 
-        $totalIncomes += $incomes['income_amount'];
-      }
+                      $totalExpenses += $expenses['expense_amount'];
+                      
+                      $expensesTableRowsQuery = $db -> prepare(
+                      "SELECT e.expense_date, e.expense_amount, pm.payment_method, e.expense_comment
+                      FROM expenses e NATURAL JOIN payment_methods pm
+                      WHERE e.category_id=:expenseCategoryId AND e.user_id=:loggedUserId AND e.expense_date BETWEEN :startDate AND :endDate
+                      ORDER BY e.expense_date ASC");
+                      $expensesTableRowsQuery -> execute([':loggedUserId' => $_SESSION['loggedUserId'], ':expenseCategoryId' => $expenses['category_id'], ':startDate'=> $startDate, ':endDate'=> $endDate]);
+                      
+                      $expensesOfSpecificCategory = $expensesTableRowsQuery -> fetchAll();
+                      
+                      foreach ($expensesOfSpecificCategory as $categoryExpense) {
+                        $transExpenses++;
+                      }
+                    }
+
+                    $userStartDate = $startDate;
+                    $userEndDate = $endDate;
+                    
+                  // Get expenses for the previous time period based on the selected button
+                $prevExpenses = 0;
+                $prevPeriodLabel = '';
+
+                if (isset($_GET['period'])) {
+                  $period = $_GET['period'];
+
+                  switch ($period) {
+                    case 'week':
+                      $prevStartDate = date('Y-m-d', strtotime('-1 week', strtotime($userStartDate)));
+                      $prevEndDate = date('Y-m-d', strtotime('-1 day', strtotime($userEndDate)));
+                      $prevPeriodLabel = 'previous week';
+                      break;
+                    case 'month':
+                      $prevStartDate = date('Y-m-01', strtotime('-1 month', strtotime($userStartDate)));
+                      $prevEndDate = date('Y-m-d', strtotime('last day of previous month', strtotime($userStartDate)));
+                      $prevPeriodLabel = 'previous month';
+                      break;
+                    case 'year':
+                      $prevStartDate = date('Y-m-d', strtotime('-1 year', strtotime($userStartDate)));
+                      $prevEndDate = date('Y-m-d', strtotime('-1 day', strtotime('last day of previous year', strtotime($userStartDate))));
+                      $prevPeriodLabel = 'previous year';
+                      break;
+                    default:
+                      $prevStartDate = date('Y-m-01', strtotime('-1 month', strtotime($userStartDate)));
+                      $prevEndDate = date('Y-m-d', strtotime('last day of previous month', strtotime($userStartDate)));
+                      $prevPeriodLabel = 'previous month';
+                      break;
+                  }
+
+                  if (!empty($prevStartDate) && !empty($prevEndDate)) {
+                    $prevExpensesQuery = $db->prepare("
+                      SELECT SUM(expense_amount) AS total_expenses
+                      FROM expenses
+                      WHERE user_id = :loggedUserId
+                        AND expense_date BETWEEN :prevStartDate AND :prevEndDate
+                    ");
+                    $prevExpensesQuery->execute([
+                      ':loggedUserId' => $_SESSION['loggedUserId'],
+                      ':prevStartDate' => $prevStartDate,
+                      ':prevEndDate' => $prevEndDate
+                    ]);
+
+                    $prevExpensesResult = $prevExpensesQuery->fetch(PDO::FETCH_ASSOC);
+                    if ($prevExpensesResult && $prevExpensesResult['total_expenses']) {
+                      $prevExpenses = $prevExpensesResult['total_expenses'];
+                      //echo $prevExpenses;
+                      
+                    }
+                    
+                  }
+                
+                }
+
+                // Calculate the percentage increase or decrease
+                $percentageChange = 0;
+                if ($prevExpenses != 0) {
+                  $percentageChange = round((($totalExpenses - $prevExpenses) / $prevExpenses) * 100);
+                }
+
+                // Determine if there's an increase or decrease
+                $changeIndicator = '';
+                if ($percentageChange > 0) {
+                  $changeIndicator = 'Increase';
+                } elseif ($percentageChange < 0) {
+                  $changeIndicator = 'Decrease';
+                } else {
+                  $changeIndicator = 'Change';
+                }
+
+                // Display the total expenses, percentage change, and change indicator
+                echo '<div class="stat-amount"><center>';
+                echo "<tr class=\"summary\"><td class=\"total\">₱ </td><td class=\"sum\">{$totalExpenses}</td></tr>";
+                echo '</center></div>';
+                echo "<div class='change-per'><tr style='font-size:small;' class=\"summary\"><td class=\"indicator\"></td><td class=\"indicator\">{$percentageChange}% {$changeIndicator} from {$prevPeriodLabel}</td></tr></div>";
+                  ?>
+      </div>
+
+
+        <div class="netSavings">
+              <div class="box-label">Net Savings </div>
+              <?php	
+                  $totalIncomes = 0;
+                  $totalExpenses = 0;
+                          
+                  foreach ($incomesOfLoggedUser as $incomes) {
+                    $totalIncomes += $incomes['income_amount'];
+                    
+                  }
+                  foreach ($expensesOfLoggedUser as $expenses) {
+                    $totalExpenses += $expenses['expense_amount'];
+                  }
+                    $balance = $totalIncomes - $totalExpenses;
+                    echo '<div class="stat-amount"><center>₱ '.$balance.'</center></div>';
+                  ?>
+        </div>
+
+        <div class="taxes">
+          <div class="box-label">Taxes </div>
+
+          <?php
+            $totalIncomes = 0;
+            foreach ($incomesOfLoggedUser as $incomes) {
+                            
+              echo "<tr class=\"summary\">
+                  
+              <!-- <td class=\"category\">{$incomes['income_category']}</td><td class=\"sum\">{$incomes['income_amount']} ₱</td> -->
+                                      
+                                      
+              </tr>";
+              //echo nl2br("=============");
+
+              $totalIncomes += $incomes['income_amount'];
+            }
+
+            
+            $taxRate = 0;
+            $taxValue = 0;
+
+            if ($totalIncomes > 0 && $totalIncomes <= 250000) {
+                $taxRate = 0;
+            } elseif ($totalIncomes > 250000 && $totalIncomes <= 400000) {
+                $taxRate = 0.15;
+            } elseif ($totalIncomes > 400000 && $totalIncomes <= 800000) {
+                $taxRate = 0.2;
+            } elseif ($totalIncomes > 800000 && $totalIncomes <= 2000000) {
+                $taxRate = 0.25;
+            } elseif ($totalIncomes > 2000000 && $totalIncomes <= 8000000) {
+                $taxRate = 0.3;
+            } elseif ($totalIncomes > 8000000) {
+                $taxRate = 0.35;
+            }
+            $taxValue = $totalIncomes * $taxRate;
+            echo'<div class="stat-amount"><center>₱';
+            echo $taxValue;
+            echo'</center></div>';
+
+          ?>
+          
+        </div>
 
       
-      $taxRate = 0;
-      $taxValue = 0;
-
-      if ($totalIncomes > 0 && $totalIncomes <= 250000) {
-          $taxRate = 0;
-      } elseif ($totalIncomes > 250000 && $totalIncomes <= 400000) {
-          $taxRate = 0.15;
-      } elseif ($totalIncomes > 400000 && $totalIncomes <= 800000) {
-          $taxRate = 0.2;
-      } elseif ($totalIncomes > 800000 && $totalIncomes <= 2000000) {
-          $taxRate = 0.25;
-      } elseif ($totalIncomes > 2000000 && $totalIncomes <= 8000000) {
-          $taxRate = 0.3;
-      } elseif ($totalIncomes > 8000000) {
-          $taxRate = 0.35;
-      }
-      $taxValue = $totalIncomes * $taxRate;
-      echo'<center>';
-      echo $taxValue;
-      echo'</center>';
-
-    ?>
-    
-  </div>
-
-  <div class="box small-box">
-        <div class="box-label">Total Transactions (expenses) </div>
-        <?php
-        //$totalTrans=$transIncomes + $transExpenses;
-        //echo"<center> $totalTrans </center>";
-        echo"<center> $transExpenses </center>";
-        ?>
-
-    </div>
-  <div class="box small-box">
-      <div class="box-label">Total Entries (incomes)</div>
-        <?php
-        //$totalTrans=$transIncomes + $transExpenses;
-        //echo"<center> $totalTrans </center>";
-        echo"<center> $transIncomes </center>";
-        ?>
-
-  </div>
-    
+        
   </div>
 
 
-  <div class="container">
+  <div class="container-chart">
 
-      <div class="box big-box">
-          <div class="box-label">Expense Distribution</div>
-          <!-- Content for big box here -->
 
           
-          <!-- Statistics -->
-			
-          <div class="row col-sm-6 col-lg-4 justify-content-center mt-5 mb-2 mx-auto box">
             
             <?php	
             $totalIncomes = 0;
@@ -450,56 +428,58 @@
               //echo '<center><div id="balance">BALANCE:&emsp;'.$balance.'</div></center>';
             ?>
             
-          </div>
+          
           
           <?php
             if(!empty($incomesOfLoggedUser)) {
               
-              echo '<div class="col-sm-8 col-lg-6 mt-4 mb-2 pt-2 pb-4 mx-auto box"><div id="piechart1"></div></div>';
+              echo '<div class="incomeChart"><div id="piechart1"></div></div>';
             }
           
             if(!empty($expensesOfLoggedUser)) {
               
-              echo '<div class="col-sm-8 col-lg-6 my-3 pt-2 pb-4 mx-auto box"><div id="piechart2"></div></div>';
+              echo '<div class="expenseChart"><div id="piechart2"></div></div>';
             }
           ?>
 
           <!-- End of Statistics -->
+ 
+
+      
+  </div>
+
+
+  <div class="container-lower">
+
+      <div class="exp-to-inc">
+        <div class="box-label">Expense to Income Ratio </div>
+
+        <?php
+          $eiRatio = 0;
+          $eiRatio = round(($totalIncomes / $totalExpenses) * 100);
+          echo'<center>';
+          echo $eiRatio.'%';
+          echo'</center>';
+
+        ?>
+        
       </div>
-  </div>
 
+      <div class="savings-to-exp">
+        <div class="box-label">Savings to Expense Ratio </div>
 
-  <div class="container">
+        <?php
+          $siRatio = 0;
+          $siRatio = round(($totalExpenses / $totalIncomes) * 100);
+          echo'<center>';
+          echo $siRatio.'%';
+          echo'</center>';
 
-  <div class="box small-box">
-    <div class="box-label">Expense to Income Ratio </div>
+        ?>
+        
+      </div>
 
-    <?php
-      $eiRatio = 0;
-      $eiRatio = round(($totalIncomes / $totalExpenses) * 100);
-      echo'<center>';
-      echo $eiRatio.'%';
-      echo'</center>';
-
-    ?>
-    
-  </div>
-
-  <div class="box small-box">
-    <div class="box-label">Savings to Expense Ratio </div>
-
-    <?php
-      $siRatio = 0;
-      $siRatio = round(($totalExpenses / $totalIncomes) * 100);
-      echo'<center>';
-      echo $siRatio.'%';
-      echo'</center>';
-
-    ?>
-    
-  </div>
-
-      <div class="box small-boxb">
+      <div class="exp-history">
         <div class="box-label">Expense History </div>
         
             <!-- Expenses -->
