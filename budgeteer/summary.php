@@ -178,7 +178,6 @@
             echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
             ?>
         </div>
-
         <div class="test">
 
             <!-- -->
