@@ -163,10 +163,11 @@ body{
     .saveButton{
       font-family: "Poppins", sans-serif;
       font-weight: bold;
-        background-color: #76C893;
-        border: none;
-        border-radius: 5px;
-        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+      background-color: #34A0A4;
+      color: #fff;
+      border-color: #095154;
+      border-style: solid;
+      border-radius: 5px;
         margin-right: 15px;
         height: 30px;
         width: 60px;
@@ -175,16 +176,24 @@ body{
     .cancelButton{
       font-family: "Poppins", sans-serif;
       font-weight: bold;
-        background-color: #ff9b85;
-        margin-left: 20px;
-        border: none;
-        border-radius: 5px;
-        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+      background-color: none;
+      border-color: #095154;
+      border-style: solid;
+      border-radius: 5px;
         margin-right: 15px;
         height: 30px;
         width: 60px;
     }
 
+    .editButton{
+      font-weight: bold;
+    background-color: #34A0A4;
+    color: #fff;
+    border-color: #095154;
+    border-style: solid;
+    border-radius: 5px;
+    margin-top: 10px;
+    }
     .saveButton:hover, .cancelButton:hover{
         transform: scale(1.15);
     }

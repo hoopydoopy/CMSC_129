@@ -270,6 +270,7 @@
 					<input class="amountinput" type="text" name="last_name" value="<?php echo $current_lname; ?>"disabled data-original-value="<?php echo $current_lname; ?>"><br>
 					
 			<button class="editButton" type="button" onclick="enableInputField(this)">Edit</button>
+			<br>
 			<button class="cancelButton" type="button" onclick="cancelEdit(this)" style="display: none;">Cancel</button>
 			<input class="saveButton" type="submit" value="Save" style="display: none;">
 

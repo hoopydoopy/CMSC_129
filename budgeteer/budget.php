@@ -243,14 +243,15 @@
 						</div>
 
 								<div class="button-container">
-											<button class="saveButton" type="submit">
-												<i class="icon-floppy"></i> Save
-											</button>
-										<a data-toggle="modal" data-target="#discardExpenseModal">
+								<a data-toggle="modal" data-target="#discardExpenseModal">
 											<button id="cancelButton" class="cancelButton">
 												<i class="icon-cancel-circled"></i> Cancel
 											</button>
 										</a>
+											<button class="saveButton" type="submit">
+												<i class="icon-floppy"></i> Save
+											</button>
+										
 								</div>
 							
 					
