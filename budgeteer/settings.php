@@ -1,7 +1,13 @@
-<?php 
-    session_start();
+<?php
+	session_start();
 
-	if(isset($_SESSION['loggedUserId'])) {
+	if(!isset($_SESSION['loggedUserId'])) {
+		
+		header('Location: login.php');	
+		exit();
+	}
+
+	/*if(isset($_SESSION['loggedUserId'])) {
         require_once 'database.php';
 
 		if(isset($_POST['username'])) {
@@ -32,12 +38,6 @@
 				exit();
 			}
     	}
-    }
-
-	/*else {
-		
-		header ("Location: landing.php");
-		exit();
     }*/
 ?>
 
@@ -60,7 +60,7 @@
 	<link rel="stylesheet" href="css/fontello.css">
 	-->
 	
-	<link rel="stylesheet" href="homestyle.css">
+	<link rel="stylesheet" href="expensestyle.css">
 	<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500;700&family=Fredoka+One&family=Roboto:wght@400;700;900&family=Varela+Round&display=swap" rel="stylesheet">
 	
 </head>
@@ -70,7 +70,31 @@
 		<div class="profile">
 
 			<img src="images/profile pic.png" alt="Profile Picture">
-			<p>John Doe</p>
+			<?php
+				$servername = "localhost";
+				$username = "root";
+				$password = "";
+				$dbname = "my_budget";
+				
+				$conn = new mysqli($servername, $username, $password, $dbname);
+
+				// Check connection
+				if (!$conn) {
+					die("Connection failed: " . mysqli_connect_error());
+				}
+			
+				$user_id = $_SESSION['loggedUserId'];
+				$sql = "SELECT first_name FROM users WHERE user_id = '$user_id'";
+				$result =  mysqli_query($conn, $sql);
+				if (mysqli_num_rows($result) > 0) {
+					$row = mysqli_fetch_assoc($result);
+					$current_fname = $row['first_name'];
+				}
+
+				echo'<p>';
+				echo $current_fname;
+				echo'</p>';
+			?>
 		</div>
 		<ul>
 			<li>
@@ -100,118 +124,364 @@
             <img src="images/Logo3.png" alt="Logo">
           </div>
 	</div>
-
+      
 	<?php
-       /*$servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "my_budget";
+		$servername = "localhost";
+		$username = "root";
+		$password = "";
+		$dbname = "my_budget";
+
+		/*$new_username ='';
+		$new_email = '';
+		$new_first_name ='';
+		$new_last_name = '';
+		$password = '';
+		$new_password = '';
+		$confirm_new_password = '';*/
+
 		// Connect to MySQL
-		//$conn = mysqli_connect("localhost", "user@gmail.com", "budgeteer", "my_budget");
-        $conn = new mysqli($servername, $username, $password, $dbname);
+		$conn = new mysqli($servername, $username, $password, $dbname);
 
 		// Check connection
 		if (!$conn) {
 		    die("Connection failed: " . mysqli_connect_error());
 		}
 
-		// Get user's current information
-        
 		$user_id = $_SESSION['loggedUserId']; // Assume user is logged in
-        //$user_id = 13; 
-		$sql = "SELECT username, email, password FROM users WHERE user_id = '$user_id'";
-		$result = mysqli_query($conn, $sql);
+		//$sql = "SELECT first_name, last_name, username, email, password FROM users WHERE user_id = '$user_id'";
+		$sql = "SELECT * FROM users WHERE user_id = '$user_id'";
+		
+		$result =  mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($result) > 0) {
 			$row = mysqli_fetch_assoc($result);
 			$current_name = $row['username'];
+			$current_fname = $row['first_name'];
+			$current_lname = $row['last_name'];
 			$current_password = $row['password'];
 			$current_email = $row['email'];
 		} else {
 			echo "Error: User not found";
 		}
 
-		// Handle form submission
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// Get user input
-			$new_name = $_POST['username'];
-			$new_password = $_POST['password'];
+		/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			$new_username = $_POST['username'];
 			$new_email = $_POST['email'];
+			$new_first_name = $_POST['first_name'];
+			$new_last_name = $_POST['last_name'];
+			$password = $_POST['password'];
+			$new_password = $_POST['new_password'];
+			$confirm_new_password = $_POST['confirm_new_password'];
+	
+			// Update the fields that are provided
+	
+			if (!empty($new_username)) {
+				$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
+				// Execute the SQL query to update the username
+			}
+	
+			if (!empty($new_email)) {
+				$sql = "UPDATE users SET email = '$new_email' WHERE user_id = '$user_id'";
+				// Execute the SQL query to update the email
+			}
+	
+			if (!empty($new_first_name)) {
+				$sql = "UPDATE users SET first_name = '$new_first_name' WHERE user_id = '$user_id'";
+				// Execute the SQL query to update the first name
+			}
+	
+			if (!empty($new_last_name)) {
+				$sql = "UPDATE users SET last_name = '$new_last_name' WHERE user_id = '$user_id'";
+				// Execute the SQL query to update the last name
+			}
+	
+			// Handle password update if necessary
+			if (!empty($new_password) && !empty($confirm_new_password) && $new_password === $confirm_new_password) {
+				// Verify the current password and update the new password
+			}
+		}*/
+		
+	?>
 
-			// Validate input (not shown)
+	<div class="box">
+		
+			
+			
+		<form class="budget-form" method="post">
+			<?php
+				if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+					$new_username = $_POST['username'];
+					$new_email = $_POST['email'];
+					$new_fname = $_POST['first_name'];
+					$new_lname = $_POST['last_name'];
+					/*$password = $_POST['password'];
+					$new_password = $_POST['new_password'];
+					$confirm_new_password = $_POST['confirm_new_password'];*/
+			
+					// Update the fields that are provided
+			
+					if (!empty($new_username)) {
+						$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
+						// Execute the SQL query to update the username
+					}
+			
+					if (!empty($new_email)) {
+						$sql = "UPDATE users SET email = '$new_email' WHERE user_id = '$user_id'";
+						// Execute the SQL query to update the email
+					}
+			
+					if (!empty($new_first_name)) {
+						$sql = "UPDATE users SET first_name = '$new_first_name' WHERE user_id = '$user_id'";
+						// Execute the SQL query to update the first name
+					}
+			
+					if (!empty($new_last_name)) {
+						$sql = "UPDATE users SET last_name = '$new_last_name' WHERE user_id = '$user_id'";
+						// Execute the SQL query to update the last name
+					}
+			
+					// Handle password update if necessary
+					/*if (!empty($new_password) && !empty($confirm_new_password) && $new_password === $confirm_new_password) {
+						// Verify the current password and update the new password
+					}*/
+					if (mysqli_query($conn, $sql)) {
+						echo "Profile Updated Successfully";
+					} else {
+						echo "Error Updating Profile: " . mysqli_error($conn);
+					}
 
-			// Update database
-			$sql = "UPDATE users SET username = '$new_name', password = '$new_password', email = '$new_email' WHERE id = '$user_id'";
-			if (mysqli_query($conn, $sql)) {
-				echo "Profile updated successfully";
-			} else {
-				echo "Error updating profile: " . mysqli_error($conn);
+					$current_name = $new_username;
+					$current_fname = $new_fname;
+					$current_lname = $new_lname;
+					//$current_password = $new_password;
+					$current_email = $new_email;
+				}
+			?>
+
+		<h3>SETTINGS</h3>
+
+			<div class="column">
+					<div class="amount-box">
+						<div class="amount"> <span class="">User Name</span> </div>
+
+						<!--<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>"><br>
+						<input class="saveButton" type="submit" value="Save">
+						-->
+						<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>" disabled><br>
+
+						<button class="saveButton" type="button" onclick="enableInputField(this, 'username')">Edit</button>
+						<input class="saveButton" type="submit" value="Save" style="display: none;">
+
+					</div>
+				</div>
+			
+			<div class="column">
+				<div class="amount-box">
+					<div class="amount"> <span class="">Email</span> </div>
+
+					<input class="amountinput" type="email" name="email" value="<?php echo $current_email; ?>"disabled><br>
+					<!-- <input class="saveButton" type="submit" value="Save"> -->
+					<button class="saveButton" type="button" onclick="enableInputField(this, 'email')">Edit</button>
+					<input class="saveButton" type="submit" value="Save" style="display: none;">
+				</div>
+			</div>
+
+			<div class="column">
+				<div class="amount-box">
+					<div class="amount"> <span class="">First Name</span> </div>
+
+					<input class="amountinput" type="text" name="first_name" value="<?php echo $current_fname; ?>"disabled><br>
+					<!-- <input class="saveButton" type="submit" value="Save"> -->
+					<button class="saveButton" type="button" onclick="enableInputField(this, 'first_name')">Edit</button>
+					<input class="saveButton" type="submit" value="Save" style="display: none;">
+				</div>
+			</div>
+
+			<div class="column">
+				<div class="amount-box">
+					<div class="amount"> <span class="">Last Name</span> </div>
+
+					<input class="amountinput" type="text" name="last_name" value="<?php echo $current_lname; ?>"disabled><br>
+					<!-- <input class="saveButton" type="submit" value="Save"> -->
+					<button class="saveButton" type="button" onclick="enableInputField(this, 'last_name')">Edit</button>
+					<input class="saveButton" type="submit" value="Save" style="display: none;">
+				</div>
+				
+			</div>
+
+		</form>
+		
+		<script>
+			function enableInputField(button) {
+				var form = button.closest('form');
+				var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+				var saveButtons = form.getElementsByClassName('saveButton');
+
+				for (var i = 0; i < inputs.length; i++) {
+					inputs[i].disabled = !inputs[i].disabled;
+				}
+
+				for (var j = 0; j < saveButtons.length; j++) {
+					saveButtons[j].style.display = saveButtons[j].style.display === 'none' ? 'inline-block' : 'none';
+				}
+
+				button.innerHTML = button.innerHTML === 'Edit' ? 'Cancel' : 'Edit';
 			}
 
-			// Update current information
-			$current_name = $new_name;
-			$current_password = $new_password;
-			$current_email = $new_email;
-		}*/
-	?>
-	<?php
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "my_budget";
+			/*function enableInputField(button, inputName) {
+				
+			}*/
 
-	// Connect to MySQL
-	$conn = new mysqli($servername, $username, $password, $dbname);
+			/*function enableInputField(button, inputName) {
+				var form = button.closest('form');
+				var inputField = form.querySelector('input[name="' + inputName + '"]');
+				var saveButton = inputField.nextElementSibling;
 
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
+				inputField.disabled = !inputField.disabled;
+				saveButton.style.display = inputField.disabled ? 'none' : 'inline-block';
+				button.innerHTML = inputField.disabled ? 'Edit' : 'Cancel';
+			}*/
 
-	// Get user's current information
-	//session_start();
-	$user_id = $_SESSION['loggedUserId']; // Assume user is logged in
-	$sql = "SELECT username, email, password FROM users WHERE user_id = '$user_id'";
-	$result = $conn->query($sql);
+			/*function enableInputField(button, inputName) {
+				var form = button.closest('form');
+				var inputField = form.querySelectorAll('input[name="' + inputName + '"]');
+				//var saveButton = form.querySelector('.saveButton');
+				var saveButtons = form.getElementsByClassName('saveButton');
 
-	if ($result->num_rows > 0) {
-		$row = $result->fetch_assoc();
-		$current_name = $row['username'];
-		$current_password = $row['password'];
-		$current_email = $row['email'];
-	} else {
-		echo "Error: User not found";
-	}
+				inputField.disabled = !inputField.disabled;
+				saveButton.style.display = inputField.disabled ? 'none' ? 'inline-block' : 'none';
+				button.innerHTML = button.innerHTML === 'Edit' ? 'Cancel' : 'Edit';
+			}*/
+		</script>
+		
 
-	// Handle form submission
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		// Get user input
-		$new_password = $_POST['password'];
+	</div>
 
-		// Validate input (not shown)
 
-		// Update database
-		$sql = "UPDATE users SET password = '$new_password' WHERE user_id = '$user_id'";
-		if ($conn->query($sql) === TRUE) {
-			echo "Password updated successfully";
-			$current_password = $new_password; // Update current information
-		} else {
-			echo "Error updating password: " . $conn->error;
-		}
-	}
-	?>
+</body>
+</html>
 
-	<form method="post">
+<!--<form method="post">
 		<label for="name">UserName:</label>
-		<input type="text" name="name" value="<?php echo $current_name; ?>"><br>
-
-		<label for="password">Password:</label>
-		<input type="text" name="password" value="<?php echo $current_password; ?>"><br>
+		<input type="text" name="username" value="<?php echo $current_name; ?>"><br>
 
 		<label for="email">Email:</label>
 		<input type="email" name="email" value="<?php echo $current_email; ?>"><br>
 
+		<label for="first_name">First Name:</label>
+		<input type="text" name="first_name" value="<?php echo $current_fname; ?>"><br>
+
+		<label for="last_name">Last Name:</label>
+		<input type="text" name="last_name" value="<?php echo $current_lname; ?>"><br>
+
+		<label for="password">Current Password:</label>
+		<input type="password" name="password"><br>
+
+		<label for="new_password">New Password:</label>
+		<input type="password" name="new_password"><br>
+
+		<label for="confirm_new_password">Confirm New Password:</label>
+		<input type="password" name="confirm_new_password"><br>
+
 		<input type="submit" value="Save Changes">
-	</form>
-</body>
-</html>
+	</form>-->
+<?php
+	/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+				$new_username = $_POST['username'];
+				$new_email = $_POST['email'];
+				$new_first_name = $_POST['first_name'];
+				$new_last_name = $_POST['last_name'];
+				$password = $_POST['password'];
+				$new_password = $_POST['new_password'];
+				$confirm_new_password = $_POST['confirm_new_password'];
+
+				$sql = "UPDATE users SET first_name = ?, last_name = ?, username= ?, email= ?, password= ?  WHERE user_id = '$user_id'";
+				
+				$stmt->bind_param("sssssi", $new_username, $new_first_name, $new_last_name, $new_email, $new_password);
+
+				$stmt->execute();
+
+				if ($stmt->affected_rows > 0) {
+					// Update successful
+					$message = "User information updated successfully!";
+				} else {
+					// Update failed
+					$message = "Failed to update user information!";
+				}
+			
+				// Close the statement
+				$stmt->close();
+				*/
+				/*if (!empty($new_username)) {
+					$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
+					// Execute the SQL query to update the username
+				}
+
+				if (!empty($new_email)) {
+					$sql = "UPDATE users SET email = '$new_email' WHERE user_id = '$user_id'";
+					// Execute the SQL query to update the email
+				}
+		
+				if (!empty($new_first_name)) {
+					$sql = "UPDATE users SET first_name = '$new_first_name' WHERE user_id = '$user_id'";
+					// Execute the SQL query to update the first name
+				}
+		
+				if (!empty($new_last_name)) {
+					$sql = "UPDATE users SET last_name = '$new_last_name' WHERE user_id = '$user_id'";
+					// Execute the SQL query to update the last name
+				}
+		
+				// Handle password update if necessary
+				if (!empty($new_password) && !empty($confirm_new_password) && $new_password === $confirm_new_password) {
+					// Verify the current password and update the new password
+				}
+			}*/
+
+			/*if (mysqli_query($conn, $sql)) {
+				echo "User Name updated successfully";
+			} else {
+				echo "Error updating User Name: " . mysqli_error($conn);
+			}*/
+			//$sql = "SELECT * FROM users WHERE id = '$user_id';
+			// Update current information
+			/*$current_name = $new_username;
+			$current_fname = $new_first_name;
+			$current_lname = $new_last_name;
+			$current_password ='';
+			$current_email = $new_email;*/
+			?>
+
+
+<!--<form class="budget-form" method="post">
+			<h3>SETTINGS</h3> 
+			<?php
+				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+					$new_username = $_POST['username'];
+
+					$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
+
+					if (mysqli_query($conn, $sql)) {
+						echo "User Name updated successfully";
+					} else {
+						echo "Error updating User Name: " . mysqli_error($conn);
+					}
+
+					// Update current information
+					$current_name = $new_username;
+				}
+
+			?>
+			
+			<div class="column">
+				<div class="amount-box">
+					<div class="amount"> <span class="">User Name</span> </div>
+
+					<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>"><br>
+					<input class="saveButton" type="submit" value="Save">
+
+				</div>
+			</div>
+		</form>
+
+	-->
