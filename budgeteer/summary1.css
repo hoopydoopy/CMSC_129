@@ -226,7 +226,7 @@ body{
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 20px;
-    width: 77vw;
+    width: 78vw;
   }
 
   .incomeChart{
@@ -243,14 +243,20 @@ body{
   .container-lower{
     color: #095154;
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: 1fr 1fr;
     margin-left: 20px;
+    width: 81vw;
   }
 
   .exp-to-inc, .savings-to-exp{
     background-color: #fff;
     border-radius: 10px;
-    height: 20vh;
+    height: 15vh;
+    margin-right: 10px;
+    vertical-align: bottom;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
   }
 
   .exp-to-inc{
@@ -265,4 +271,106 @@ body{
     grid-column-end: 1;
     grid-row-start: 2;
     grid-row-end: 2;
+  }
+  .ratio{
+    grid-row-start: 2;
+    grid-row-end: 2;
+    font-weight: bolder;
+    font-size: x-large;
+  }
+
+  .exp-history, .inc-history{
+    background-color: #fff;
+    border-radius: 10px;
+    margin-right: 10px;
+    height: 35vh;
+    overflow-y: auto;
+    grid-row: span 2;
+  }
+
+  
+  .exp-history{
+    grid-column-start: 2;
+    grid-column-end: 2;
+  }
+
+  .inc-history{
+    grid-column-start: 3;
+    grid-column-end: 3;
+  }
+
+  
+.exp{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-content: left;
+  }
+  
+  .expAmount{
+    color: red;
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+  
+  .expPayment{
+    grid-column-start: 2;
+    grid-column-end: 2;
+    justify-content: left;
+    align-items: self-start;
+  }
+  
+  .expCategory{
+    grid-column-start: 3;
+    grid-column-end: 3;
+  
+  }
+
+  .expDate{
+    grid-column-start: 4;
+    grid-column-end: 4;
+  
+  }
+  
+  .expComment{
+    justify-content: left;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    font-size: small;
+  }
+
+
+  .inc{
+    margin-left: 10px;
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: left;
+  }
+  
+  .incAmount{
+    color: green;
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+
+  .incCategory{
+    grid-column-start: 2;
+    grid-column-end: 2;
+  
+  }
+  .incDate{
+    grid-column-start: 3;
+    grid-column-end: 3;
+  
+  }
+  
+  .incComment{
+    justify-content: left;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    font-size: small;
   }
