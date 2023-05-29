@@ -158,18 +158,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<div class="column">
 			<div class="amount-box">
 				<div class="amount"> <span class="">Income Amount</span> </div>
-				<input class="amountinput" type="text" name="expense_amount" value = "<?php echo $current_amount; ?>" required><br>
+				<input class="amountinput" type="number" step="0.01" name="income_amount" value = "<?php echo $current_amount; ?>" required><br>
+				
 			</div>
 		</div>
 
 		<div class="column">
 			<div class="amount-box">
 				<div class="amount"> <span class="">Comments</span> </div>
-				<input class="amountinput" type="text" name="expense_amount" value = "<?php echo $current_amount; ?>" required><br>
+				<input class="amountinput" type="text" name="income_comment" value = "<?php echo $current_comment; ?>" ><br>
 			</div>
 			<br>
 			<br>
 			<input class="saveButton" type="submit" value="Save">
+			<button id="cancelButton" class="cancelButton"> Cancel</button>
 		</div>
 
 
