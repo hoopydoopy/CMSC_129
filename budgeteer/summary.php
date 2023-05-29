@@ -83,7 +83,31 @@
 		<div class="profile">
 
 			<img src="images/profile pic.png" alt="Profile Picture">
-			<p>John Doe</p>
+			<?php
+				$servername = "localhost";
+				$username = "root";
+				$password = "";
+				$dbname = "my_budget";
+				
+				$conn = new mysqli($servername, $username, $password, $dbname);
+
+				// Check connection
+				if (!$conn) {
+					die("Connection failed: " . mysqli_connect_error());
+				}
+			
+				$user_id = $_SESSION['loggedUserId'];
+				$sql = "SELECT first_name FROM users WHERE user_id = '$user_id'";
+				$result =  mysqli_query($conn, $sql);
+				if (mysqli_num_rows($result) > 0) {
+					$row = mysqli_fetch_assoc($result);
+					$current_fname = $row['first_name'];
+				}
+
+				echo'<p>';
+				echo $current_fname;
+				echo'</p>';
+			?>
 		</div>
 		<ul>
 			<li>
@@ -116,7 +140,7 @@
 
 <!--Week, Month, Year Button -->
 
-  
+<div class="container">
       <div class="center-div" >
       
       
@@ -142,19 +166,19 @@
               <button class="yearButton" onclick="location.href='summary.php?userStartDate=<?php echo $userStartDate; ?>&userEndDate=<?php echo $userEndDate; ?>&period=year'">Year</button>
         </div>
 
-                  <script>
-                    function updateDateRange(startDate, endDate, timePeriod) {
-                      var url = 'summary.php?userStartDate=' + startDate + '&userEndDate=' + endDate + '&timePeriod=' + timePeriod;
-                      window.location.href = url;
-                    }
-                  </script>
+        <script>
+          function updateDateRange(startDate, endDate, timePeriod) {
+            var url = 'summary.php?userStartDate=' + startDate + '&userEndDate=' + endDate + '&timePeriod=' + timePeriod;
+            window.location.href = url;
+          }
+        </script>
         
         <div class="date-range">
             <?php
             echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
             ?>
         </div>
-
+  </div>
             <div class="test">
 
             <!-- -->
@@ -456,7 +480,9 @@
 
         <?php
           $eiRatio = 0;
-          $eiRatio = round(($totalIncomes / $totalExpenses) * 100);
+          if ($totalExpenses != 0) {
+            $eiRatio = round(($totalExpenses  / $totalIncomes) * 100);
+          }
           echo'<div class="ratio"><center>';
           echo $eiRatio.'%';
           echo'</center></div>';
@@ -470,7 +496,9 @@
 
         <?php
           $siRatio = 0;
-          $siRatio = round(($totalExpenses / $totalIncomes) * 100);
+          if ($totalExpenses != 0) {
+            $siRatio = round(($totalIncomes / $totalExpenses) * 100);
+          }
           echo'<div class="ratio"><center>';
           echo $siRatio.'%';
           echo'</center></div>';
@@ -548,7 +576,6 @@
 								
 								foreach ($incomesOfLoggedUser as $incomes) {
 									
-									
 									//echo nl2br("=============");
 									
 									$totalIncomes += $incomes['income_amount'];
@@ -606,6 +633,28 @@
 </body>
 
 </html>
+
+<!-- 
+<div class="box small-box">
+        <div class="box-label">Total Transactions (expenses) </div>
+        <?php
+        //$totalTrans=$transIncomes + $transExpenses;
+        //echo"<center> $totalTrans </center>";
+        echo"<center> $transExpenses </center>";
+        ?>
+
+    </div>
+  <div class="box small-box">
+      <div class="box-label">Total Entries (incomes)</div>
+        <?php
+        //$totalTrans=$transIncomes + $transExpenses;
+        //echo"<center> $totalTrans </center>";
+        echo"<center> $transIncomes </center>";
+        ?>
+
+  </div>
+
+-->
 
 <?php
             /*if($balance > 0) {
