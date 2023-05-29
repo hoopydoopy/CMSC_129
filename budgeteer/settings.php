@@ -164,97 +164,72 @@
 			echo "Error: User not found";
 		}
 
-		/*if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$new_username = $_POST['username'];
-			$new_email = $_POST['email'];
-			$new_first_name = $_POST['first_name'];
-			$new_last_name = $_POST['last_name'];
-			$password = $_POST['password'];
-			$new_password = $_POST['new_password'];
-			$confirm_new_password = $_POST['confirm_new_password'];
-	
-			// Update the fields that are provided
-	
-			if (!empty($new_username)) {
-				$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
-				// Execute the SQL query to update the username
-			}
-	
-			if (!empty($new_email)) {
-				$sql = "UPDATE users SET email = '$new_email' WHERE user_id = '$user_id'";
-				// Execute the SQL query to update the email
-			}
-	
-			if (!empty($new_first_name)) {
-				$sql = "UPDATE users SET first_name = '$new_first_name' WHERE user_id = '$user_id'";
-				// Execute the SQL query to update the first name
-			}
-	
-			if (!empty($new_last_name)) {
-				$sql = "UPDATE users SET last_name = '$new_last_name' WHERE user_id = '$user_id'";
-				// Execute the SQL query to update the last name
-			}
-	
-			// Handle password update if necessary
-			if (!empty($new_password) && !empty($confirm_new_password) && $new_password === $confirm_new_password) {
-				// Verify the current password and update the new password
-			}
-		}*/
 		
 	?>
 
 	<div class="box">
-		
-			
-			
+					
 		<form class="budget-form" method="post">
 			<?php
+			//$current_name = $current_fname = $current_lname = $current_email = '';
+
 				if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					$new_username = $_POST['username'];
 					$new_email = $_POST['email'];
 					$new_fname = $_POST['first_name'];
 					$new_lname = $_POST['last_name'];
-					/*$password = $_POST['password'];
-					$new_password = $_POST['new_password'];
-					$confirm_new_password = $_POST['confirm_new_password'];*/
-			
-					// Update the fields that are provided
-			
-					if (!empty($new_username)) {
-						$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
-						// Execute the SQL query to update the username
-					}
-			
-					if (!empty($new_email)) {
-						$sql = "UPDATE users SET email = '$new_email' WHERE user_id = '$user_id'";
-						// Execute the SQL query to update the email
-					}
-			
-					if (!empty($new_first_name)) {
-						$sql = "UPDATE users SET first_name = '$new_first_name' WHERE user_id = '$user_id'";
-						// Execute the SQL query to update the first name
-					}
-			
-					if (!empty($new_last_name)) {
-						$sql = "UPDATE users SET last_name = '$new_last_name' WHERE user_id = '$user_id'";
-						// Execute the SQL query to update the last name
-					}
-			
-					// Handle password update if necessary
-					/*if (!empty($new_password) && !empty($confirm_new_password) && $new_password === $confirm_new_password) {
-						// Verify the current password and update the new password
-					}*/
-					if (mysqli_query($conn, $sql)) {
-						echo "Profile Updated Successfully";
+
+					if (mysqli_num_rows($result) > 0) {
+						$row = mysqli_fetch_assoc($result);
+						if (isset($row['username'])) {
+							$current_name = $row['username'];
+						}
+						if (isset($row['first_name'])) {
+							$current_fname = $row['first_name'];
+						}
+						if (isset($row['last_name'])) {
+							$current_lname = $row['last_name'];
+						}
+						if (isset($row['email'])) {
+							$current_email = $row['email'];
+						}
 					} else {
-						echo "Error Updating Profile: " . mysqli_error($conn);
+						echo "Error: User not found";
 					}
 
-					$current_name = $new_username;
-					$current_fname = $new_fname;
-					$current_lname = $new_lname;
-					//$current_password = $new_password;
-					$current_email = $new_email;
+
+					    // Update the fields that are provided
+					$updates = [];
+
+					if (!empty($new_username)) {
+						$updates[] = "username = '$new_username'";
+					}
+
+					if (!empty($new_email)) {
+						$updates[] = "email = '$new_email'";
+					}
+
+					if (!empty($new_fname)) {
+						$updates[] = "first_name = '$new_fname'";
+					}
+
+					if (!empty($new_lname)) {
+						$updates[] = "last_name = '$new_lname'";
+					}
+
+					if (!empty($updates)) {
+						$updateSql = "UPDATE users SET " . implode(", ", $updates) . " WHERE user_id = '$user_id'";
+						if (mysqli_query($conn, $updateSql)) {
+							echo "Profile Updated Successfully";
+						} else {
+							echo "Error Updating Profile: " . mysqli_error($conn);
+						}
+
+						$current_name = $new_username;
+						$current_fname = $new_fname;
+						$current_lname = $new_lname;
+						$current_email = $new_email;
+					}
 				}
 			?>
 
@@ -264,14 +239,8 @@
 					<div class="amount-box">
 						<div class="amount"> <span class="">User Name</span> </div>
 
-						<!--<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>"><br>
-						<input class="saveButton" type="submit" value="Save">
-						-->
-						<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>" disabled><br>
 
-						<button class="saveButton" type="button" onclick="enableInputField(this, 'username')">Edit</button>
-						<input class="saveButton" type="submit" value="Save" style="display: none;">
-
+						<input class="amountinput" type="text" name="username" value="<?php echo $current_name; ?>"disabled data-original-value="<?php echo $current_name; ?>"><br>
 					</div>
 				</div>
 			
@@ -279,10 +248,9 @@
 				<div class="amount-box">
 					<div class="amount"> <span class="">Email</span> </div>
 
-					<input class="amountinput" type="email" name="email" value="<?php echo $current_email; ?>"disabled><br>
-					<!-- <input class="saveButton" type="submit" value="Save"> -->
-					<button class="saveButton" type="button" onclick="enableInputField(this, 'email')">Edit</button>
-					<input class="saveButton" type="submit" value="Save" style="display: none;">
+					<input class="amountinput" type="email" name="email" value="<?php echo $current_email; ?>"disabled data-original-value="<?php echo $current_email; ?>"><br>
+					
+					
 				</div>
 			</div>
 
@@ -290,68 +258,61 @@
 				<div class="amount-box">
 					<div class="amount"> <span class="">First Name</span> </div>
 
-					<input class="amountinput" type="text" name="first_name" value="<?php echo $current_fname; ?>"disabled><br>
-					<!-- <input class="saveButton" type="submit" value="Save"> -->
-					<button class="saveButton" type="button" onclick="enableInputField(this, 'first_name')">Edit</button>
-					<input class="saveButton" type="submit" value="Save" style="display: none;">
+					<input class="amountinput" type="text" name="first_name" value="<?php echo $current_fname; ?>"disabled data-original-value="<?php echo $current_fname; ?>"><br>
+					
 				</div>
 			</div>
 
 			<div class="column">
 				<div class="amount-box">
-					<div class="amount"> <span class="">Last Name</span> </div>
+					<div class="amount"> <span class="">Last Name</span> </div>	
 
-					<input class="amountinput" type="text" name="last_name" value="<?php echo $current_lname; ?>"disabled><br>
-					<!-- <input class="saveButton" type="submit" value="Save"> -->
-					<button class="saveButton" type="button" onclick="enableInputField(this, 'last_name')">Edit</button>
-					<input class="saveButton" type="submit" value="Save" style="display: none;">
+					<input class="amountinput" type="text" name="last_name" value="<?php echo $current_lname; ?>"disabled data-original-value="<?php echo $current_lname; ?>"><br>
+					
+			<button class="editButton" type="button" onclick="enableInputField(this)">Edit</button>
+			<button class="cancelButton" type="button" onclick="cancelEdit(this)" style="display: none;">Cancel</button>
+			<input class="saveButton" type="submit" value="Save" style="display: none;">
+
 				</div>
 				
 			</div>
-
+			
 		</form>
 		
 		<script>
-			function enableInputField(button) {
-				var form = button.closest('form');
-				var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
-				var saveButtons = form.getElementsByClassName('saveButton');
 
-				for (var i = 0; i < inputs.length; i++) {
-					inputs[i].disabled = !inputs[i].disabled;
-				}
+		function enableInputField(button) {
+			var form = button.closest('form');
+			var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+			var saveButton = form.querySelector('.saveButton');
+			var cancelButton = form.querySelector('.cancelButton');
 
-				for (var j = 0; j < saveButtons.length; j++) {
-					saveButtons[j].style.display = saveButtons[j].style.display === 'none' ? 'inline-block' : 'none';
-				}
-
-				button.innerHTML = button.innerHTML === 'Edit' ? 'Cancel' : 'Edit';
+			for (var i = 0; i < inputs.length; i++) {
+			inputs[i].disabled = false;
 			}
 
-			/*function enableInputField(button, inputName) {
-				
-			}*/
+			saveButton.style.display = 'inline-block';
+			cancelButton.style.display = 'inline-block';
+			button.style.display = 'none';
+		}
 
-			/*function enableInputField(button, inputName) {
-				var form = button.closest('form');
-				var inputField = form.querySelector('input[name="' + inputName + '"]');
-				var saveButton = inputField.nextElementSibling;
+		function cancelEdit(button) {
+			var form = button.closest('form');
+			var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+			var saveButton = form.querySelector('.saveButton');
+			var editButton = form.querySelector('.editButton');
+			var cancelButton = form.querySelector('.cancelButton');
 
-				inputField.disabled = !inputField.disabled;
-				saveButton.style.display = inputField.disabled ? 'none' : 'inline-block';
-				button.innerHTML = inputField.disabled ? 'Edit' : 'Cancel';
-			}*/
+			for (var i = 0; i < inputs.length; i++) {
+			inputs[i].disabled = true;
+			inputs[i].value = inputs[i].getAttribute('data-original-value'); // Reset input value to the original value
+			}
 
-			/*function enableInputField(button, inputName) {
-				var form = button.closest('form');
-				var inputField = form.querySelectorAll('input[name="' + inputName + '"]');
-				//var saveButton = form.querySelector('.saveButton');
-				var saveButtons = form.getElementsByClassName('saveButton');
+			saveButton.style.display = 'none';
+			cancelButton.style.display = 'none';
+			editButton.style.display = 'inline-block';
+		}
 
-				inputField.disabled = !inputField.disabled;
-				saveButton.style.display = inputField.disabled ? 'none' ? 'inline-block' : 'none';
-				button.innerHTML = button.innerHTML === 'Edit' ? 'Cancel' : 'Edit';
-			}*/
 		</script>
 		
 
@@ -456,7 +417,7 @@
 <!--<form class="budget-form" method="post">
 			<h3>SETTINGS</h3> 
 			<?php
-				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$new_username = $_POST['username'];
 
 					$sql = "UPDATE users SET username = '$new_username' WHERE user_id = '$user_id'";
@@ -469,7 +430,7 @@
 
 					// Update current information
 					$current_name = $new_username;
-				}
+				}*/
 
 			?>
 			
