@@ -178,8 +178,7 @@
             echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
             ?>
         </div>
-  </div>
-            <div class="test">
+        <div class="test">
 
             <!-- -->
             <form action="summary.php" method="GET" >
@@ -193,7 +192,9 @@
               $endDate = $_GET['userEndDate'] ?? $userEndDate;
             ?>
 
-            </div> 
+            </div>
+  </div>
+             
   </div>
             
       </div>
