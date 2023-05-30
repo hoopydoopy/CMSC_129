@@ -63,10 +63,10 @@ function drawChart(incomes, expenses) {
 		}
 				
 		var incomesOptions = {
-			title: 'Expense Distribution',
+			title: 'Income Distribution',
 			//colors: ['#00e64d', '#66ff99', '#b3ffcc'],
-			//colors: ['#370617', '#6a040f', '#9d0208'],
-			colors: ['#C8EB9B', '#5E807F  ', '#D3C1C3 ','#082D0F '],
+			colors: ['#370617', '#6a040f', '#9d0208'],
+			//colors: ['#00e64d', '#5E807F', '#D3C1C3','#082D0F'],
 			backgroundColor: { fill:'transparent' },
 			chartArea:{top:30,bottom:10,width:'100%',height:'100%'},
 			fontSize: 16
@@ -83,10 +83,10 @@ function drawChart(incomes, expenses) {
 		expensesData.addColumn('number', 'Amount');
 
 		var expensesOptions = {
-			title: 'Income Distribution',
+			title: 'Expense Distribution',
 			//colors: ['#ff3333', '#ff6666', '#ffb3b3'],
-			//colors: ['#370617', '#6a040f', '#9d0208','#dc2f02','#e85d04'],
-			colors: ['#7D6FBB', '#F2BEFC', '#669BBC','#E4B7E5'],
+			colors: ['#370617', '#6a040f', '#9d0208','#dc2f02','#e85d04'],
+			//colors: ['#010101', '#EE4266 ', '#6247AA','#D88373'],
 			backgroundColor: { fill:'transparent' },
 			chartArea:{top:30,bottom:10,width:'100%',height:'100%'},
 			fontSize: 16
@@ -100,3 +100,21 @@ function drawChart(incomes, expenses) {
 		expensesChart.draw(expensesData, expensesOptions);
 	}
 }
+
+function enableProfilePictureUpload() {
+	const profilePicInput = document.getElementById('profilePicInput');
+	const profilePic = document.getElementById('profilePic');
+  
+	profilePicInput.addEventListener('change', function(event) {
+	  const file = event.target.files[0];
+	  const reader = new FileReader();
+  
+	  reader.onload = function(e) {
+		const imageDataURL = e.target.result;
+		profilePic.src = imageDataURL;
+		// Perform additional actions if needed, such as uploading the image to the server
+	  };
+  
+	  reader.readAsDataURL(file);
+	});
+  }

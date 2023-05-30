@@ -128,7 +128,7 @@
           echo '<a href="summary.php?userStartDate='.$userStartDate.'&userEndDate='.$userEndDate.'.&period=month" class="active">Statistics</a>';
         ?>
       </li>
-      <li><a href="#">Notes</a></li>
+      <!-- <li><a href="#">Notes</a></li> -->
       <li><a href="calendar.php">Calendar</a></li>
       <li><a href="settings.php">Settings</a></li>
       <li><a href="logout.php">Log Out</a></li>
@@ -178,7 +178,8 @@
             echo "<span class='date' id ='result'>".date('M j, Y', strtotime($startDate))."</span>  -  <span class='date' id ='result'>".date('M j, Y', strtotime($endDate))."</span>";
             ?>
         </div>
-        <div class="test">
+  </div>
+            <div class="test">
 
             <!-- -->
             <form action="summary.php" method="GET" >
@@ -192,12 +193,12 @@
               $endDate = $_GET['userEndDate'] ?? $userEndDate;
             ?>
 
-            </div>
+            </div> 
   </div>
             
       </div>
 
-
+  
 
   <!--Week, Month, Year Button -->
 
@@ -481,7 +482,8 @@
 
         <?php
           $eiRatio = 0;
-          if ($totalExpenses != 0) {
+
+          if ($totalIncomes != 0) {
             $eiRatio = round(($totalExpenses  / $totalIncomes) * 100);
           }
           echo'<div class="ratio"><center>';
@@ -517,7 +519,7 @@
 
               <?php
 								$totalExpenses = 0;
-
+								
 								foreach ($expensesOfLoggedUser as $expenses) {
 
 
@@ -573,9 +575,10 @@
                </div>";
                     //echo nl2br("=============");
 									}
+                  $expenseCount ++;
                   echo'<br>';
 								}
-
+								
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalExpenses} ₱</td></tr>";
 							?>
 
@@ -589,7 +592,7 @@
 
             <?php
 								$totalIncomes = 0;
-
+								
 								foreach ($incomesOfLoggedUser as $incomes) {
 
 									//echo nl2br("=============");
@@ -642,9 +645,10 @@
 
                     //echo nl2br("=============");
 									}
+                  $incomeCount++;
                   echo'<br>';
 								}
-
+								
 								//echo "<tr class=\"summary\"><td class=\"total\">TOTAL</td><td class=\"sum\">{$totalIncomes} ₱</td>
 
 
