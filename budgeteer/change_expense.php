@@ -167,8 +167,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</div>
 			<br>
 			<br>
-			<input class="saveButton" type="submit" value="Save">
-			<button id="cancelButton" class="cancelButton"> Cancel</button>
+			<div class='button-container1'>
+				<button id="cancelButton" class="cancelButton"> Cancel</button>
+				<input class="saveButton" type="submit" value="Save">
+				
+			</div>
 		</div>
 
 

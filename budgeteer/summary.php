@@ -560,15 +560,15 @@
 
               </tr>
               <td>
-              <div class=\"col-md-11\">
+              <div class=\"histButtons\">
               <a href=\"change_expense.php?expense_id={$categoryExpense['expense_id']});\">
-                  <button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"button\">
+                  <button class=\"histEdit\" type=\"button\">
                     <i class=\"icon-floppy\"></i> Edit
                   </button>
                 </a>
                 <a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
                 <a href=\"delete_expense.php?expense_id={$categoryExpense['expense_id']};\">
-                  <button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+                  <button class=\"histDelete\">
                     <i class=\"icon-cancel-circled\"></i> Delete
                   </button>
                 </a>
@@ -629,15 +629,15 @@
                       </div>
 										</tr>
 										<td>
-										<div class=\"col-md-11\">
+										<div class=\"histButtons\">
 										<a href=\"change_income.php?income_id={$categoryIncome['income_id']});\">
-												<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-primary\" type=\"button\">
+												<button class=\"histEdit\" type=\"button\">
 													<i class=\"icon-floppy\"></i> Edit
 												</button>
 											</a>
 											<a data-toggle=\"modal\" data-target=\"#discardExpenseModal\">
 											<a href=\"delete_income.php?income_id={$categoryIncome['income_id']};\">
-												<button class=\"btn-lg mt-3 mb-2 mx-1 signButton bg-danger\">
+												<button class=\"histDelete\">
 													<i class=\"icon-cancel-circled\"></i> Delete
 												</button>
 											</a>

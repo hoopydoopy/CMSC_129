@@ -375,3 +375,32 @@ body{
     grid-column-end: 3;
     font-size: small;
   }
+
+
+  .histEdit, .histDelete{
+    transform: scale(0.8);
+    border-radius: 5px;
+    border-style: solid;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+  }
+
+
+
+  .histEdit{
+    background-color: #34A0A4;
+    border-color: #095154;
+  }
+
+  .histEdit:hover{
+    background-color: #095154;
+  }
+
+  .histDelete{
+    background-color: crimson ;
+  }
+
+.histButtons{
+  height: 5vh;
+}
